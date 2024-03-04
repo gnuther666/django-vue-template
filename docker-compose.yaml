@@ -1,0 +1,40 @@
+version: '3'
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: .\META\backend\Dockerfile
+    container_name: backend
+    volumes:
+      - ./src/backend:/backend
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    command: python3 manage.py runserver 0.0.0.0:${BACKEND_PORT}
+    env_file:
+      - .env
+    networks:
+      template_network:
+        ipv4_address: ${BACKEND_IP}
+
+  frontend:
+    build:
+      context: .
+      dockerfile: .\META\frontWeb\Dockerfile
+    container_name: frontend
+    volumes:
+      - ./src/clientWeb:/web
+    ports:
+      - ${FRONT_WEB_PORT}:${FRONT_WEB_PORT}
+    command: tail -f /dev/null
+    env_file:
+      - .env
+    networks:
+      template_network:
+        ipv4_address: ${FRONTEND_IP}
+
+networks:
+  template_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${BASE_IP}.0.0.0/16
