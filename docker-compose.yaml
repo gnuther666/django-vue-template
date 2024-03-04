@@ -41,7 +41,7 @@ services:
       - ./src/clientMB:/web
     ports:
       - ${FRONT_MB_PORT}:${FRONT_MB_PORT}
-    command: tail -f /dev/null
+    command: sh /web/start_up.sh
     env_file:
       - .env
     networks:
@@ -56,9 +56,10 @@ services:
     volumes:
       - ${DB_DATA_PATH}:/var/lib/postgresql/data
     ports:
-      - ${FRONT_MB_PORT}:${FRONT_MB_PORT}
+      - ${DB_PORT}:${DB_PORT}
     environment:
-      - POSTGRES_PASSEORD: ${DB_PASSWORD}
+      - POSTGRES_PASSEORD=${DB_PASSWORD}
+      - POSTGRES_PASSWORD=password
     env_file:
       - .env
     networks:
