@@ -25,12 +25,45 @@ services:
       - ./src/clientWeb:/web
     ports:
       - ${FRONT_WEB_PORT}:${FRONT_WEB_PORT}
-    command: tail -f /dev/null
+    command: sh start_up.sh
     env_file:
       - .env
     networks:
       template_network:
         ipv4_address: ${FRONTEND_IP}
+
+  front_mb:
+    build:
+      context: .
+      dockerfile: .\META\frontMB\Dockerfile
+    container_name: front_mb
+    volumes:
+      - ./src/clientMB:/web
+    ports:
+      - ${FRONT_MB_PORT}:${FRONT_MB_PORT}
+    command: tail -f /dev/null
+    env_file:
+      - .env
+    networks:
+      template_network:
+        ipv4_address: ${FRONTMB_IP}
+
+  postgres:
+    image: postgres:16.2
+    container_name: db
+    restart: always
+    shm_size: 256mb
+    volumes:
+      - ${DB_DATA_PATH}:/var/lib/postgresql/data
+    ports:
+      - ${FRONT_MB_PORT}:${FRONT_MB_PORT}
+    environment:
+      - POSTGRES_PASSEORD: ${DB_PASSWORD}
+    env_file:
+      - .env
+    networks:
+      template_network:
+        ipv4_address: ${DB_IP}
 
 networks:
   template_network:
