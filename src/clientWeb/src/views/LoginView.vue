@@ -29,9 +29,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { getCaptcha, postLogin } from '../api'
-import { debounce } from 'lodash'
 import { useRouter } from 'vue-router'
 
 const local_value = ref({
@@ -96,17 +95,22 @@ function hexToBlob(hexString) {
   // 创建一个指向该Blob对象的URL
   return URL.createObjectURL(blob)
 }
+const router = useRouter()
 
 const onSubmit = () => {
   const login_info = local_value.value.login_info
-  console.log(login_info)
+  console.log('接口返回数据', login_info)
   postLogin(login_info).then((res) => {
+    local_value.value.access_token = res.data.access_token
+    local_value.value.refresh_token = res.data.refresh_token
+    local_value.value.out_username = res.data.username
     localStorage.setItem('access_token', local_value.value.access_token)
     localStorage.setItem('refresh_token', local_value.value.refresh_token)
     localStorage.setItem('out_username', local_value.value.out_username)
-    const router = useRouter()
-    console.log(router)
-    router.push('/home')
+    nextTick(() => {
+      console.log('已设置登录信息', localStorage.getItem('access_token'))
+      router.push('/')
+    })
   })
 }
 </script>

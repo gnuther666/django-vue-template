@@ -35,7 +35,11 @@ router.beforeEach((to, from, next) => {
 function isAuthenticated() {
   const token = localStorage.getItem('access_token')
   console.log('是否授权', token)
-  return token != null
+  if (token === null || token === undefined || token.length === 0) {
+    return false
+  } else {
+    return true
+  }
 }
 
 export default router
