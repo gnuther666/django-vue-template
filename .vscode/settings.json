@@ -1,0 +1,37 @@
+{
+    "remote.SSH.remotePlatform": {
+        "test-1.woozatop.com": "linux",
+        "117.50.187.148": "linux"
+    },
+    "python.autoComplete.extraPaths": [],
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.formatOnType": true,
+        "editor.wordBasedSuggestions": "off"
+    },
+    "python.analysis.extraPaths": [
+        "/app/venv_iot/bin/python3"
+    ],
+    "workbench.colorTheme": "Visual Studio Light",
+    "codeium.enableConfig": {
+        "*": true,
+        "properties": true
+    },
+    "remote.SSH.configFile": "D:\\vsconfig\\ssh_config",
+    "files.autoSave": "afterDelay",
+    "vetur.completion.scaffoldSnippetSources": {
+        
+
+        "workspace": "💼",
+        "user": "🗒️",
+        "vetur": "✌"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.vueIndentScriptAndStyle": true,
+    "[vue]": {
+        "editor.formatOnSave": true
+    },
+    "vetur.format.defaultFormatter.html": "prettyhtml",
+    "vetur.format.defaultFormatter.js": "vscode-typescript",
+    "vetur.format.defaultFormatter.css": "prettier",
+}
