@@ -1,5 +1,11 @@
 django + vue + taro 管理系统模板(开发中)
+模板提供基本的前后台分离框架，用来快捷的开发web和小程序  
+* 后台: python39 + django + rest + jwt + redis
+* web端: vite + vue + element-ui-plus
+* 小程序端: taro + vue
 
+
+后端:
 # 注意事项
 1. 因为后端apt源没有修改,所以如果速度慢，最好开启vpn后再开始构建镜像
 
@@ -9,25 +15,5 @@ django + vue + taro 管理系统模板(开发中)
 2. 登录和验证码显示不全问题解决
 3. 登录流程开发
 
-
-day1:
-基础模块搭建完成
-day2:
-账户密码登录
-day3:
-oauth登录
-day4:
-手机号验证登录
-day5:
-登录验证码
-
-day6:
-用户权限级别
-day7:
-单项功能授权
-day8:
-文件上传下载及oss
-day9:
-异步任务与mqtt
-day10:
-用户信息编辑
+# 240308
+1. 菜单栏导航和默认路由跳转

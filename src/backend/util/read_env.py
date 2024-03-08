@@ -16,6 +16,8 @@ class EnvConfig:
     redis_ip: str
     redis_password: str
     data_path: str
+    backend_port: int
+    media_path: str
 
 class EnvironmentLoaderSingleton:
     _instance = None
@@ -33,6 +35,8 @@ class EnvironmentLoaderSingleton:
                 'redis_ip': os.environ.get('REDIS_IP', None),
                 'redis_password': os.environ.get('REDIS_PASSWORD', None),
                 'data_path': os.environ.get('BACKEND_INNER_PATH', None),
+                'backend_port': os.environ.get('BACKEND_PORT', None),
+                'media_path': os.environ.get('BACKEND_MEDIA_PATH', None),
             }
             for key, value in env_vars.items():
                 if value is None:

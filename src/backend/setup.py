@@ -8,6 +8,8 @@ class SetUp:
 
     def run(self):
         self.__pre_check_db()
+        self.__copy_example_data()
+        self.__finally_setup_server()
 
     def __pre_check_db(self):
         try:
@@ -54,7 +56,7 @@ class SetUp:
                 cursor.execute(sql)
                 
                 # 获取所有数据库名
-                tables = [row[0] for row in cursor.fetchall()]
+                tables = [row for row in cursor.fetchall()]
                 
                 if len(tables) == 0:
                     os.system("python3 manage.py makemigrations")
@@ -64,6 +66,15 @@ class SetUp:
 
         finally:
             connection.close()
+
+    def __copy_example_data(self):
+        source_dir = './example_resource'
+        dist_dir = EnvironmentLoaderSingleton().get_env().media_path
+        os.system(f'cp -rf {source_dir} {dist_dir}')
+        pass
+
+    def __finally_setup_server(self):
+        os.system("python3 manage.py runserver 0.0.0.0:" + str(EnvironmentLoaderSingleton().get_env().backend_port))
                 
 if __name__ == '__main__':
     SetUp().run()
