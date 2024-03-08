@@ -70,7 +70,9 @@ class SetUp:
     def __copy_example_data(self):
         source_dir = './example_resource'
         dist_dir = EnvironmentLoaderSingleton().get_env().media_path
-        os.system(f'cp -rf {source_dir} {dist_dir}')
+        cmd = f'cp -rf {source_dir} {dist_dir}'
+        print('执行拷贝命令：' + cmd)
+        os.system(cmd)
         pass
 
     def __finally_setup_server(self):
