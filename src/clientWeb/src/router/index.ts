@@ -13,6 +13,26 @@ const router = createRouter({
           path: '/',
           name: 'home',
           component: () => import('../views/HomeView.vue')
+        },
+        {
+          path: '/user',
+          name: 'user',
+          component: () => import('../views/UserCenter.vue')
+        },
+        {
+          path: '/help',
+          name: 'help',
+          component: () => import('../views/HelpView.vue')
+        },
+        {
+          path: '/example',
+          name: 'example',
+          component: () => import('../views/ExampleView.vue')
+        },
+        {
+          path: '/404',
+          name: 'notFound',
+          component: () => import('../views/NotFoundPageView.vue')
         }
       ]
     },
@@ -20,6 +40,10 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/404'
     }
   ]
 })

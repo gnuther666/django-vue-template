@@ -38,6 +38,7 @@ onMounted(() => {
   color: aliceblue;
 }
 .loged {
+
   color: aliceblue;
 }
 </style>

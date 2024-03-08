@@ -1,13 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { useRouter } from 'vue-router'
 import TopMenuUser from '@/views/TopMenuUser.vue'
 const local_value = ref({
-  activueIndex2: '1'
+  activueIndex2: '1',
+  logoutDialogVisible: false
 })
+const router = useRouter()
 
 function handleSelect(key: string, keyPath: string[]) {
-  console.log(key, keyPath)
+  if (key.startsWith('ignore_')) {
+    console.log('不做处理')
+  } else {
+    router.push(key)
+  }
+}
+
+function confirmLogout() {
+  // 确认退出登录的逻辑，例如清除token、跳转到登录页面等
+  localStorage.removeItem('access_token') // 假设token存放在localStorage
+  router.push('/login')
+  local_value.value.logoutDialogVisible = false
+}
+
+function showLogoutConfirm(event) {
+  // event.preventDefault() // 阻止默认行为（如果需要的话）
+  console.log('退出登录')
+  local_value.value.logoutDialogVisible = true
 }
 </script>
 
@@ -16,8 +35,9 @@ function handleSelect(key: string, keyPath: string[]) {
     <el-container>
       <el-header style="padding: 0">
         <el-menu
-          :default-active="local_value.activeIndex2"
+          :default-active="$route.path"
           class="el-menu-demo"
+          router="true"
           mode="horizontal"
           background-color="#545c64"
           text-color="#fff"
@@ -27,22 +47,38 @@ function handleSelect(key: string, keyPath: string[]) {
         >
           <div>
             <a href="/"
-              ><img src="@/assets/image/project_logo.png" class="homepage_logo" alt=""
-            /></a>
+              ><img src="@/assets/image/project_logo.png" class="homepage_logo" alt="" /><label
+                style="margin-left: 10px; font-size: 20px; font-weight: bold; margin-right: 10px"
+                >全栈模板系统前台</label
+              ></a
+            >
           </div>
-          <el-menu-item index="1">首页</el-menu-item>
-          <el-menu-item index="2">示例</el-menu-item>
-          <el-sub-menu index="3" style="position: absolute; right: 0"
+          <el-menu-item index="/">首页</el-menu-item>
+          <el-menu-item index="/example">示例</el-menu-item>
+          <el-sub-menu index="ignore_submenu_1" style="position: absolute; right: 0"
             ><template #title><TopMenuUser /></template>
-            <el-menu-item index="2-1">用户中心</el-menu-item>
-            <el-menu-item index="2-2">帮助</el-menu-item>
-            <el-menu-item index="2-3">联系我们</el-menu-item>
+            <el-menu-item index="/user">用户中心</el-menu-item>
+            <el-menu-item index="/help">帮助</el-menu-item>
+            <el-menu-item index="/login" @click="showLogoutConfirm">退出登录</el-menu-item>
           </el-sub-menu>
           <!-- <div class="user_info_blck">
             <TopMenuUser /></div> -->
         </el-menu></el-header
       >
       <el-main><RouterView /></el-main>
+      <el-dialog
+        title="退出登录确认"
+        v-model="local_value.logoutDialogVisible"
+        width="30%"
+        append-to-body
+        style="z-index: 99"
+      >
+        <span>确定要退出登录吗？</span>
+        <div slot="footer">
+          <el-button @click="local_value.logoutDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="confirmLogout">确定</el-button>
+        </div>
+      </el-dialog>
     </el-container>
   </div>
 </template>
@@ -52,7 +88,7 @@ function handleSelect(key: string, keyPath: string[]) {
   height: 60%;
   position: relative;
   top: 20%;
-  left: 20%;
+  left: 5%;
   margin-right: 20px;
 }
 .user_info_blck {
