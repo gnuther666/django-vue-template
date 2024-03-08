@@ -18,8 +18,9 @@ class EnvConfig:
     data_path: str
     backend_port: int
     media_path: str
+    log_path: str
 
-class EnvironmentLoaderSingleton:
+class GetEnv:
     _instance = None
     _loaded_env: EnvConfig = None
     def __new__(cls):
@@ -37,6 +38,7 @@ class EnvironmentLoaderSingleton:
                 'data_path': os.environ.get('BACKEND_INNER_PATH', None),
                 'backend_port': os.environ.get('BACKEND_PORT', None),
                 'media_path': os.environ.get('BACKEND_MEDIA_PATH', None),
+                'log_path': os.environ.get('BACKEND_LOG_PATH', None),
             }
             for key, value in env_vars.items():
                 if value is None:
@@ -49,4 +51,4 @@ class EnvironmentLoaderSingleton:
         return cls._instance
 
     def get_env(self) -> EnvConfig:
-        return EnvironmentLoaderSingleton._loaded_env
+        return GetEnv._loaded_env

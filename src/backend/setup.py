@@ -1,6 +1,6 @@
 import pymysql.cursors
 import os
-from util.read_env import EnvironmentLoaderSingleton
+from util.read_env import GetEnv
 
 class SetUp:
     def __init__(self):
@@ -13,11 +13,11 @@ class SetUp:
 
     def __pre_check_db(self):
         try:
-            connection = pymysql.connect(host=EnvironmentLoaderSingleton().get_env().db_ip,
+            connection = pymysql.connect(host=GetEnv().get_env().db_ip,
                                 user='root',
-                                password=EnvironmentLoaderSingleton().get_env().db_password,
+                                password=GetEnv().get_env().db_password,
                                 db='mysql',
-                                port=EnvironmentLoaderSingleton().get_env().db_port,
+                                port=GetEnv().get_env().db_port,
                                 cursorclass=pymysql.cursors.DictCursor)
         except Exception as e:
             raise RuntimeError('ERROR: step1:db connect failed: ' + str(e))
@@ -31,8 +31,8 @@ class SetUp:
                 # 获取所有数据库名
                 databases = [row['SCHEMA_NAME'] for row in cursor.fetchall()]
                 
-                if EnvironmentLoaderSingleton().get_env().db_name not in databases:
-                    sql = "CREATE DATABASE " + EnvironmentLoaderSingleton().get_env().db_name
+                if GetEnv().get_env().db_name not in databases:
+                    sql = "CREATE DATABASE " + GetEnv().get_env().db_name
                     cursor.execute(sql)
                     print('crate database successfully')
 
@@ -40,11 +40,11 @@ class SetUp:
             connection.close()
 
         try:
-            connection = pymysql.connect(host=EnvironmentLoaderSingleton().get_env().db_ip,
+            connection = pymysql.connect(host=GetEnv().get_env().db_ip,
                                 user='root',
-                                password=EnvironmentLoaderSingleton().get_env().db_password,
-                                db=EnvironmentLoaderSingleton().get_env().db_name,
-                                port=EnvironmentLoaderSingleton().get_env().db_port,
+                                password=GetEnv().get_env().db_password,
+                                db=GetEnv().get_env().db_name,
+                                port=GetEnv().get_env().db_port,
                                 cursorclass=pymysql.cursors.DictCursor)
         except Exception as e:
             raise RuntimeError('ERROR: step2: db connect failed: ' + str(e))
@@ -69,14 +69,13 @@ class SetUp:
 
     def __copy_example_data(self):
         source_dir = './example_resource'
-        dist_dir = EnvironmentLoaderSingleton().get_env().media_path
-        cmd = f'cp -rf {source_dir} {dist_dir}'
+        dist_dir = os.path.join(GetEnv().get_env().media_path, 'example_resource')
+        cmd = f'mkdir -p {dist_dir} && cp -rf {source_dir}/* {dist_dir}'
         print('执行拷贝命令：' + cmd)
         os.system(cmd)
-        pass
 
     def __finally_setup_server(self):
-        os.system("python3 manage.py runserver 0.0.0.0:" + str(EnvironmentLoaderSingleton().get_env().backend_port))
+        os.system("python3 manage.py runserver 0.0.0.0:" + str(GetEnv().get_env().backend_port))
                 
 if __name__ == '__main__':
     SetUp().run()

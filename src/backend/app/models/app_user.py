@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from util.read_env import EnvironmentLoaderSingleton
+from util.read_env import GetEnv
 from django.contrib.auth.hashers import make_password, check_password
 import uuid
 
@@ -16,15 +16,15 @@ class AppUserModel(AbstractUser):
 
     @staticmethod
     def gen_default_super_user():
-        admin_user_name = EnvironmentLoaderSingleton().get_env().super_user_name
+        admin_user_name = GetEnv().get_env().super_user_name
         obj = AppUserModel.objects.filter(username=admin_user_name).first()
         if not obj:
             obj = AppUserModel()
             obj.id = uuid.uuid4().hex
-        ori_password = EnvironmentLoaderSingleton().get_env().super_user_password
+        ori_password = GetEnv().get_env().super_user_password
         obj.password = make_password(ori_password)
         obj.is_superuser = True
-        obj.username = EnvironmentLoaderSingleton().get_env().super_user_name
+        obj.username = GetEnv().get_env().super_user_name
         obj.email = 'default_super_user@example.com'
         obj.is_staff = True
         obj.is_active = True

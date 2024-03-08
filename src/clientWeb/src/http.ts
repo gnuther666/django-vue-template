@@ -1,8 +1,9 @@
 import axios from 'axios'
 
+export const ServerUrl = 'http://localhost:8000'
 
 const http = axios.create({
-  baseURL: 'http://localhost:8000', // 开发环境
+  baseURL: ServerUrl, // 开发环境
   // baseURL: 'https://www.example.com', // 生产环境
   timeout: 10000, // 请求超时时间
 })
@@ -10,7 +11,7 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
-    config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+    config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
     return config
   },
   (error) => {

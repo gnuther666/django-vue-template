@@ -12,19 +12,27 @@ import http from './http'
     }
 }
 
+namespace EXAMPLE {
+  interface get_image_list {
+    images: Array<string>
+  }
+}
+
 // 定义所有接口地址
 interface API {
   login: string
   getUserInfo: string
   logout: string
   captcha: string
+  get_image_list: string
 }
 
 const api: API = {
-  login: '/app-api/login/',
+  login: '/backend/login/',
   getUserInfo: '/user/info',
   logout: '/user/logout',
-  captcha: '/captcha/',
+  captcha: '/backend/captcha/',
+  get_image_list: '/backend/api/example/get_image_list/',
 }
 
 // 封装 GET 请求
@@ -55,4 +63,8 @@ export function getCaptcha(): Promise<LOGIN.Captcha> {
 
 export function postLogin(data: any): Promise<LOGIN.LoginInfo> {
     return post<LOGIN.LoginInfo>(api.login, data)
+}
+
+export function getImageList(): Promise<EXAMPLE.get_image_list> {
+  return get<EXAMPLE.get_image_list>(api.get_image_list)
 }

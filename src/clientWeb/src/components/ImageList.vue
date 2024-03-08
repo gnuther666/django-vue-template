@@ -1,9 +1,29 @@
 <script setup lang="ts">
+import { ServerUrl } from '@/http.js'
+
 defineProps(['image_list'])
 </script>
 
 <template>
   <main>
-    <div>{{ image_list }}</div>
+    <el-row :gutter="10">
+      <el-col
+        v-for="(imageUrl, index) in image_list"
+        :key="index"
+        :xs="8"
+        :sm="8"
+        :md="8"
+        :lg="3"
+        :xl="2"
+      >
+        <el-image
+          :src="`${ServerUrl}${imageUrl}`"
+          fit="cover"
+          style="height: 100px"
+          alt="Image from list"
+        >
+        </el-image>
+      </el-col>
+    </el-row>
   </main>
 </template>

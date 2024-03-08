@@ -1,7 +1,7 @@
 import time, os
-from util.read_env import EnvironmentLoaderSingleton
+from util.read_env import GetEnv
 
-log_path = os.path.join(EnvironmentLoaderSingleton().get_env().data_path , 'log')
+log_path = GetEnv().get_env().log_path
 if not os.path.exists(log_path): os.mkdir(log_path)  # 如果不存在这个logs文件夹，则就自动创建一个 
 
 LOGGING = {
@@ -76,6 +76,11 @@ LOGGING = {
             'handlers': ['console', 'default'],
             'propagate': True,
             'level':'DEBUG',
-        }
+        },
+        'django.utils.autoreload': {
+            'level': 'WARNING',
+            'handlers': ['console'],  # 可以替换为你实际使用的 handler 名称
+            'propagate': False,  # 防止这个日志向上级 logger 传播
+        },
     }
 }

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from util.read_env import EnvironmentLoaderSingleton
+from util.read_env import GetEnv
 import datetime
 from util.log import LOGGING
 
@@ -91,25 +91,25 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': EnvironmentLoaderSingleton().get_env().db_name, 
+        'NAME': GetEnv().get_env().db_name, 
         'USER': 'root',  
-        'PASSWORD': EnvironmentLoaderSingleton().get_env().db_password, 
-        'HOST': EnvironmentLoaderSingleton().get_env().db_ip, 
-        'PORT': EnvironmentLoaderSingleton().get_env().db_port 
+        'PASSWORD': GetEnv().get_env().db_password, 
+        'HOST': GetEnv().get_env().db_ip, 
+        'PORT': GetEnv().get_env().db_port 
     }
 }
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://:{auth}@{host}:{port}/{db}".format(auth=EnvironmentLoaderSingleton().get_env().redis_password,
-                                                                host=EnvironmentLoaderSingleton().get_env().redis_ip,
+        "LOCATION": "redis://:{auth}@{host}:{port}/{db}".format(auth=GetEnv().get_env().redis_password,
+                                                                host=GetEnv().get_env().redis_ip,
                                                                 port=6379,
                                                                 db=0
                                                                 ),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "PASSWORD": EnvironmentLoaderSingleton().get_env().redis_password
+            "PASSWORD": GetEnv().get_env().redis_password
         }
     }
 }
@@ -175,3 +175,10 @@ SIMPLE_JWT = {
 }
 
 ## JWT END
+
+
+## 资源存储 START
+STATIC_URL = 'static/'
+MEDIA_ROOT = GetEnv().get_env().media_path
+MEDIA_URL = 'backend/media/'
+## 资源存储 END
