@@ -13,7 +13,7 @@ defineProps(['image_list'])
         :xs="8"
         :sm="8"
         :md="8"
-        :lg="3"
+        :lg="6"
         :xl="2"
       >
         <el-image

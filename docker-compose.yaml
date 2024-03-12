@@ -35,21 +35,21 @@ services:
   #     template_network:
   #       ipv4_address: ${FRONTEND_IP}
 
-  front_mb:
-    build:
-      context: .
-      dockerfile: .\META\frontMB\Dockerfile
-    container_name: front_mb
-    volumes:
-      - ./src/clientMB:/web
-    ports:
-      - ${FRONT_MB_PORT}:${FRONT_MB_PORT}
-    command: sh /web/start_up.sh
-    env_file:
-      - .env
-    networks:
-      template_network:
-        ipv4_address: ${FRONTMB_IP}
+  # front_mb:
+  #   build:
+  #     context: .
+  #     dockerfile: .\META\frontMB\Dockerfile
+  #   container_name: front_mb
+  #   volumes:
+  #     - ./src/clientMB:/web
+  #   ports:
+  #     - ${FRONT_MB_PORT}:${FRONT_MB_PORT}
+  #   command: sh /web/start_up.sh
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     template_network:
+  #       ipv4_address: ${FRONTMB_IP}
 
   db:
     image: mysql:8.0

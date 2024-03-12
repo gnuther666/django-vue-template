@@ -7,7 +7,7 @@ const local_value = ref({
   logoutDialogVisible: false
 })
 const router = useRouter()
-
+const use_router = ref(true)
 function handleSelect(key: string, keyPath: string[]) {
   if (key.startsWith('ignore_')) {
     console.log('不做处理')
@@ -37,7 +37,7 @@ function showLogoutConfirm(event) {
         <el-menu
           :default-active="$route.path"
           class="el-menu-demo"
-          router="true"
+          :router="use_router"
           mode="horizontal"
           background-color="#545c64"
           text-color="#fff"

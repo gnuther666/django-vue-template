@@ -19,12 +19,13 @@ from django.urls import path, include
 from rest_framework import routers
 from app.views.login.login_view import CustomTokenObtainPairView
 from app.views.login.captcha_view import get_captcha
-from app.views.example.example_view import ExampleViewset
+from app.views.example.example_view import ExampleViewset, ExampleLoginedViewset
 from django.conf import settings
 from django.conf.urls.static import static
 
 router = routers.SimpleRouter()
 router.register(r'example', ExampleViewset)
+router.register(r'example_logined', ExampleLoginedViewset)
 
 urlpatterns = [
     path('backend/admin/', admin.site.urls),
