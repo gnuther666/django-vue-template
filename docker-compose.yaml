@@ -3,7 +3,7 @@ services:
   backend:
     build: 
       context: .
-      dockerfile: .\META\backend\Dockerfile
+      dockerfile: ./META/backend/Dockerfile
     container_name: backend
     volumes:
       - ./src/backend:/backend

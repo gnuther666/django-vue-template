@@ -39,3 +39,14 @@ django + vue + taro 管理系统模板
   * [x] 文件上传和下载
 
 
+# 积累
+## 热更新
+1. wsl2 required
+2. sudo apt install watchman
+3. add this scope code to vite.config.ts
+  ```json
+  watch: {
+      usePolling: true,
+      interval: 1000,
+    },
+  ```

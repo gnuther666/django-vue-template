@@ -28,17 +28,36 @@ onMounted(() => {
 </template>
 
 <style>
-.user_info {
-  height: 100%;
-  margin-right: 20px;
-  margin-left: 20px;
+@media (max-width: 600px) {
+  .user_info {
+    margin-left: 2px;
+  }
+  .unlogin {
+  color: rgb(25, 26, 27);
 }
 
-.unlogin {
+.loged {
+
+  color: rgb(22, 24, 24);
+}
+}
+
+@media (min-width: 601px) {
+  .user_info {
+    height: 100%;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+  .unlogin {
   color: aliceblue;
 }
+
 .loged {
 
   color: aliceblue;
 }
+}
+
+
+
 </style>

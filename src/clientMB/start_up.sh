@@ -1,1 +1,0 @@
-cd /web && yarn && yarn run dev:h5

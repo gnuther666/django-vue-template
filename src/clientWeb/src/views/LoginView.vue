@@ -1,26 +1,27 @@
 <template>
   <div class="fullscreen-background">
-    <div class="login_prj_title">
+    <div class="top_title">
       <img src="@/assets/image/project_logo.png" alt="logo" class="login_prj_icon" />
-      <p class="login_prj_title_text">全栈模板系统前台</p>
+      <p class="login_prj_text">全栈模板系统前台</p>
     </div>
     <div class="login_area">
-      <el-form>
-        <el-form-item label="账号">
+      <el-form :label-position="login_form_label_position">
+        <el-form-item label="账号" class="form_item" :label-width="60">
           <el-input v-model="local_value.login_info.username" />
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" class="form_item" :label-width="60">
           <el-input type="password" v-model="local_value.login_info.password" />
         </el-form-item>
-        <el-form-item label="验证码" v-if="enable_verify()">
-          <img :src="local_value.image_url" v-if="local_value.image_url" alt="Hexadecimal image" />
-          <el-icon><RefreshRight /></el-icon>
-          <el-input v-model="local_value.login_info.verify_input" />
+        <el-form-item label="验证码" v-if="enable_verify()" class="form_item" :label-width="60">
+          <el-input v-model="local_value.login_info.verify_input" class="short_input" />
+          <img :src="local_value.image_url" v-if="local_value.image_url" alt="Hexadecimal image" class="captcha_img"/>
+          <el-icon>
+            <RefreshRight />
+          </el-icon>
+          
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit" v-bind:disabled="!enable_login()"
-            >登录</el-button
-          >
+          <el-button type="primary" @click="onSubmit" v-bind:disabled="!enable_login()">登录</el-button>
           <el-button type="primary" @click="onSubmit">注册</el-button>
         </el-form-item>
       </el-form>
@@ -32,6 +33,7 @@
 import { ref, nextTick } from 'vue'
 import { getCaptcha, postLogin } from '../api'
 import { useRouter } from 'vue-router'
+import type { FormProps } from 'element-plus'
 
 const local_value = ref({
   login_info: {
@@ -48,6 +50,7 @@ const local_value = ref({
   out_username: ''
 })
 
+const login_form_label_position = ref<FormProps['labelPosition']>('right')
 function enable_login() {
   if (
     local_value.value.login_info.username.length === 0 ||
@@ -60,12 +63,6 @@ function enable_login() {
 }
 
 function enable_verify() {
-  if (
-    local_value.value.login_info.username.length === 0 ||
-    local_value.value.login_info.password.length === 0
-  ) {
-    return false
-  }
   get_captcha()
   return true
 }
@@ -116,42 +113,127 @@ const onSubmit = () => {
 </script>
 <style>
 .fullscreen-background {
-  height: 100vh; /* 确保元素高度等于视口高度 */
-  width: 100vw; /* 确保元素宽度等于视口宽度 */
+  height: 100vh;
+  /* 确保元素高度等于视口高度 */
+  width: 100vw;
+  /* 确保元素宽度等于视口宽度 */
   position: absolute;
   left: 0;
   top: 0;
-  background-image: url('@/assets/image/login_backend.png'); /* 替换为你的背景图片路径 */
-  object-fit: fill;
+  background-image: url('@/assets/image/login_backend.png');
+  /* 替换为你的背景图片路径 */
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-size: cover;
   z-index: 0;
   overflow-x: hidden;
   overflow-y: hidden;
 }
-.login_prj_title {
-  position: relative;
-  top: 3%;
-  left: 10%;
-  z-index: 1;
-  height: 6vh;
-  line-height: 6vh;
-  display: flex;
-  align-items: center;
+
+
+@media (max-width: 600px) {
+  .top_title {
+    width: 70vw;
+    margin-top: 15vh;
+    height: 6vh;
+    position: absolute;
+    top: 0vh;
+    left: 20vw;
+  }
+
+  .login_prj_icon {
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
+
+  .login_prj_text {
+    font-size: 1.5rem;
+    position: absolute;
+    margin-left: 10px;
+    left: 40px;
+    top: 0px;
+  }
+
+  .login_area {
+    position: absolute;
+    right: 5%;
+    top: 40vh;
+    width: 90vw;
+    height: 40vh;
+    border: #eeeeee solid 1px;
+    background-color: rgba(255, 255, 229, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+  }
+
+  .short_input {
+    width: 20vw;
+  }
+
+  .captcha_img {
+    width: 35vw;
+    margin-left: 5vw;
+  }
+
+  .form_item {
+  width: 80vw;
 }
-.login_prj_icon {
-  height: 100%;
+
 }
-.login_prj_title_text {
-  line-height: inherit;
-  font-size: 40px;
-  margin-left: 30px;
+
+@media (min-width: 601px) {
+  .top_title {
+    width: 40vw;
+    margin-top: 15vh;
+    height: 6vh;
+    position: absolute;
+    top: 0vh;
+    left: 15vw;
+  }
+
+  .login_prj_icon {
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
+
+  .login_prj_text {
+    font-size: 1.8rem;
+    position: absolute;
+    margin-left: 10px;
+    left: 40px;
+    top: -5px;
+  }
+
+  .login_area {
+    position: absolute;
+    right: 10%;
+    top: 30%;
+    width: 30em;
+    height: 20em;
+    border: #eeeeee solid 1px;
+    background-color: rgba(255, 255, 229, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+  }
+
+  .short_input {
+    width: 5vw;
+  }
+
+  .captcha_img {
+    width: 6vw;
+    margin-left: 0.5vw;
+  }
+  
+  .long_input {
+  width: 80%;
 }
-.login_area {
-  position: absolute;
-  right: 10%;
-  top: 30%;
-  border: #eeeeee solid 1px;
-  background-color: rgba(255, 255, 229, 0.5);
-  border-radius: 15px;
-  padding: 20px;
 }
+
+
+
 </style>

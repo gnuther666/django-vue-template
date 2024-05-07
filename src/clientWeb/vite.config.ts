@@ -26,5 +26,8 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // 绑定所有可用网络接口，包括本地IP和公网IP
     port: PORT, // 设置开发服务器运行在3000端口上
+    watch: {
+      usePolling: true
+    },
   }
 })
