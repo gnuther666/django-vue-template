@@ -19,6 +19,6 @@ export function getImageList(): Promise<itfc_get_image_list> {
 }
 
 
-export function getTestImage(url_path): Promise<itfc_get_example_image_url> {
+export function getTestImage(url_path: string): Promise<itfc_get_example_image_url> {
     return get<itfc_get_example_image_url>(url_path)
 }

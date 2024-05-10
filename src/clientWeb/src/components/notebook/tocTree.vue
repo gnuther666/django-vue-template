@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { defineProps, onUpdated, ref } from 'vue';
+import { defineProps, onUpdated, ref, watch } from 'vue';
 import { getTocBooks, addNote as ApiAddNote } from '@/api/notebook'
 import isEmptyObject from '@/util/isEmptyObject'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, emitChangeFn } from 'element-plus'
+import { common_response } from '@/api/base_method.ts'
 const props = defineProps(['book_id'])
-
+const emits = defineEmits(['doc_change'])
 interface TocStruct {
     id: number,
     type: string,
@@ -31,6 +32,8 @@ interface LocalValueInterface {
 
 }
 
+
+
 const local_value = ref<LocalValueInterface>({
     current_book_id: undefined,
     current_doc_id: undefined,
@@ -55,7 +58,7 @@ onUpdated(() => {
 
 function getToc() {
     if (local_value.value.current_book_id !== undefined) {
-        getTocBooks(local_value.value.current_book_id).then((res) => {
+        getTocBooks(local_value.value.current_book_id).then((res: any) => {
             local_value.value.toc = res.data
         })
     }
@@ -90,6 +93,10 @@ function addDoc(parent = undefined) {
 function DocClicked(data: TocStruct) {
     console.log('doc clicked', data)
     local_value.value.current_doc_id = data.id
+    if (local_value.value.current_doc_id !== undefined) {
+        console.log('doc changed', local_value.value.current_doc_id)
+        emits('doc_change', local_value.value.current_doc_id)
+    }
 }
 </script>
 

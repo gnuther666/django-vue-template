@@ -15,6 +15,8 @@ const api_list: Record<string, string> = {
 
     'get_tocs': '/backend/api/notebook_toc/get_tocs/',
     'add_note': '/backend/api/notebook_toc/add_note/',
+    'get_doc_content': '/backend/api/notebook_doc/get_doc_content/',
+    'save_content': '/backend/api/notebook_doc/save_content/'
 }
 
 export function getGetBooks(): Promise<type_get_books>  {
@@ -42,4 +44,14 @@ export function getTocBooks(book_id:number): Promise<type_get_books>  {
 
 export function addNote(parent_id:number|undefined, title:string, type:string, book_id: number): Promise<type_add_books> {
     return post<type_add_books>(api_list.add_note, {'parent_id': parent_id, 'title': title, 'type': type, 'book_id': book_id})
+}
+
+export function getDocContent(doc_id:number): Promise<type_get_books>  {
+    const data = get<type_get_books>(api_list.get_doc_content, {'doc_id': doc_id})
+    return data 
+}
+
+export function saveDocContent(doc_id:number, doc_content:string): Promise<type_get_books>  {
+    const data = post<type_get_books>(api_list.save_content, {'doc_id': doc_id, 'doc_content': doc_content})
+    return data 
 }

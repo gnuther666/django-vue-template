@@ -87,6 +87,26 @@ services:
     networks:
       template_network:
         ipv4_address: ${REDIS_IP}
+  web:
+    image: nginx:1.25.2
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    privileged: true
+    volumes:
+      - ./META/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./META/nginx/hosts:/etc/hosts:ro
+      # - ./META/nginx/user_web:/user/web:ro
+      - ${HTML_ROOT}:/www:ro
+      # - ${IOT_DATA_PATH}/nginx:/var/log/nginx
+      # - /etc/letsencrypt/archive/manager.woozatop.com/fullchain2.pem:/ssl_pem/server.crt:ro
+      # - /etc/letsencrypt/archive/manager.woozatop.com/privkey2.pem:/ssl_pem/server.key:ro
+    env_file:
+      ./.env
+    networks:
+      hx_net:
+        ipv4_address: 173.0.0.8
 
 networks:
   template_network:

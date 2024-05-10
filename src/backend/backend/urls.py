@@ -24,12 +24,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from notebook.views.book import UserBookViewset
 from notebook.views.book_toc import BookTocViewset
+from notebook.views.doc import BookDocViewset
 
 router = routers.SimpleRouter()
 router.register(r'example', ExampleViewset)
 router.register(r'example_logined', ExampleLoginedViewset)
 router.register(r'notebook', UserBookViewset)
 router.register(r'notebook_toc', BookTocViewset)
+router.register(r'notebook_doc', BookDocViewset)
 
 
 urlpatterns = [

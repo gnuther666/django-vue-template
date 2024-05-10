@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import TopMenuUser from '@/views/TopMenuUser.vue'
 import { is_mobile } from '@/util/isMobile'
-import { DrawerProps } from 'element-plus';
 const local_value = ref({
   activueIndex2: '1',
   logoutDialogVisible: false,
@@ -49,7 +48,7 @@ const updateMenuProps = () => {
 function onMobileMenuButtonClicked(event) {
   local_value.value.menu_config.show_mobie_menu = !local_value.value.menu_config.show_mobie_menu
 }
-const MobileDrawerDirection = ref<DrawerProps['direction']>('ltr')
+const MobileDrawerDirection = ref<any>('ltr')
 onMounted(() => {
   window.addEventListener('resize', updateMenuProps);
 })

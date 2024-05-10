@@ -1,6 +1,6 @@
 import http from './base_http'
 
-interface common_response<T> {
+export interface common_response<T> {
     code: number,
     data: T,
     msg: string,

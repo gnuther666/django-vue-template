@@ -3,12 +3,16 @@ import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { ElMessageBox, ElMessage, tagEmits } from 'element-plus'
 import bookMenu from '@/components/notebook/bookMenu.vue'
 import tocTree from '@/components/notebook/tocTree.vue'
-import { getGetBooks, type_get_books, addBooks, type_add_books, renameBooks, deleteBooks } from '@/api/notebook'
+import { getGetBooks, addBooks, renameBooks, deleteBooks } from '@/api/notebook'
+import { defineEmits } from 'vue';
+
+const emits = defineEmits(['book_id_change'])
+
 interface LocalValueInterface {
     is_close: boolean;
     current_text: string;
     current_select_index: number | undefined;
-    books: type_get_books | undefined;
+    books: any | undefined;
     touched: number;
     showMenu: boolean;
     menuPosition: Record<string, number>;
@@ -239,7 +243,9 @@ onUnmounted(() => {
         </div>
 
         <div :style="{ display: local_value.is_close ? 'none' : 'block' }">
-            <tocTree :book_id="local_value.current_select_index"/>
+            <tocTree :book_id="local_value.current_select_index" @doc_change="(doc_id)=>{
+                emits('book_id_change', doc_id)
+            }"/>
         </div>
     </main>
 </template>

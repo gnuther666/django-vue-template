@@ -4,7 +4,10 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
-const PORT = parseInt(process.env.FRONT_WEB_PORT) || 8001
+let PORT =  8001
+if (process.env.FRONT_WEB_PORT) {
+  PORT = parseInt(process.env.FRONT_WEB_PORT)
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,12 +15,13 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
-  include: [
-    'src/*.ts',
-    'src/*.vue',
-    'src/**/*.ts',
-    'src/**/*.vue',
-  ],
+  // include: [
+  //   'src/*.ts',
+  //   'src/*.vue',
+  //   'src/**/*.ts',
+  //   'src/**/*.vue',
+  //   'src/**/**/*.vue',
+  // ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
