@@ -30,6 +30,11 @@ const router = createRouter({
           component: () => import('../views/ExampleView.vue')
         },
         {
+          path: '/notebook',
+          name: 'notebook',
+          component: () => import('../views/noteBook.vue')
+        },
+        {
           path: '/404',
           name: 'notFound',
           component: () => import('../views/NotFoundPageView.vue')

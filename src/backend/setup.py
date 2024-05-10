@@ -1,15 +1,20 @@
 import pymysql.cursors
-import os
+import os, time
 from util.read_env import GetEnv
 
 class SetUp:
-    def __init__(self):
+    def __init__(self, only_setup=False):
+        self.only_setup = only_setup
         pass
 
     def run(self):
-        self.__pre_check_db()
-        self.__copy_example_data()
-        self.__finally_setup_server()
+        if self.only_setup:
+            while True:
+                time.sleep(3)
+        else:
+            self.__pre_check_db()
+            self.__copy_example_data()
+            self.__finally_setup_server()
 
     def __pre_check_db(self):
         try:
@@ -78,4 +83,4 @@ class SetUp:
         os.system("python3 manage.py runserver 0.0.0.0:" + str(GetEnv().get_env().backend_port))
                 
 if __name__ == '__main__':
-    SetUp().run()
+    SetUp(only_setup=True).run()

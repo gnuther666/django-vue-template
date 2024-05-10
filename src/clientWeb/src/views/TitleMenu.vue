@@ -72,6 +72,7 @@ onUnmounted(() => {
           </div>
           <el-menu-item index="/">首页</el-menu-item>
           <el-menu-item index="/example">示例</el-menu-item>
+          <el-menu-item index="/notebook">笔记管理</el-menu-item>
           <el-sub-menu index="ignore_submenu_1" style="position: absolute; right: 0"><template #title>
               <TopMenuUser />
             </template>
@@ -91,6 +92,7 @@ onUnmounted(() => {
             :mode="local_value.menu_config.menu_direction"  @select="handleSelect" flex>
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/example">示例</el-menu-item>
+            <el-menu-item index="/notebook">笔记管理</el-menu-item>
             <el-sub-menu index="ignore_submenu_1" ><template #title>
                 <TopMenuUser />
               </template>

@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import { ref, nextTick } from 'vue'
-import { getCaptcha, postLogin } from '../api'
+import { getCaptcha, postLogin } from '@/api/login'
 import { useRouter } from 'vue-router'
 import type { FormProps } from 'element-plus'
 

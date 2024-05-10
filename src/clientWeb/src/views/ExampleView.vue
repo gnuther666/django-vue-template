@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getImageList } from '@/api'
+import { getImageList } from '@/api/example'
 import { ref, onMounted } from 'vue'
 import ImageList from '@/components/ImageList.vue'
 import ImageUpload from '@/components/ImageUpload.vue'

@@ -2,6 +2,6 @@
 
 <template>
   <main>
-    <div>巫妖吃</div>
+    <div>首页</div>
   </main>
 </template>

@@ -16,7 +16,7 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import { ServerUrl } from '@/http.js'
+import { ServerUrl } from '@/api/base_http'
 import type { UploadProps } from 'element-plus'
 defineProps(['image_url'])
 const imageUrl = ref('')

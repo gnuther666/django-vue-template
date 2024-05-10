@@ -8,8 +8,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import { ServerUrl } from '@/http'
-import { getTestImage } from '@/api'
+import { ServerUrl } from '@/api/base_http'
+import { getTestImage } from '@/api/example'
 
 const props = defineProps({
   api_url: String

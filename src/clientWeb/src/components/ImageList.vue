@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ServerUrl } from '@/http.js'
+import { ServerUrl } from '@/api/base_http'
 
 defineProps(['image_list'])
 </script>

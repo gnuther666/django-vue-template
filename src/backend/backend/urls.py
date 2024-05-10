@@ -22,10 +22,15 @@ from app.views.login.captcha_view import get_captcha
 from app.views.example.example_view import ExampleViewset, ExampleLoginedViewset
 from django.conf import settings
 from django.conf.urls.static import static
+from notebook.views.book import UserBookViewset
+from notebook.views.book_toc import BookTocViewset
 
 router = routers.SimpleRouter()
 router.register(r'example', ExampleViewset)
 router.register(r'example_logined', ExampleLoginedViewset)
+router.register(r'notebook', UserBookViewset)
+router.register(r'notebook_toc', BookTocViewset)
+
 
 urlpatterns = [
     path('backend/admin/', admin.site.urls),
