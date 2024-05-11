@@ -1,10 +1,9 @@
 import axios from 'axios'
 
-export const ServerUrl = 'http://localhost:8000'
-
+export const ServerUrl = import.meta.env.VITE_BACKEND_PATH
+console.log('后端地址', ServerUrl)
 const http = axios.create({
   baseURL: ServerUrl, // 开发环境
-  // baseURL: 'https://www.example.com', // 生产环境
   timeout: 10000, // 请求超时时间
 })
 // 添加请求拦截器

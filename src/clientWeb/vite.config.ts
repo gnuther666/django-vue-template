@@ -1,12 +1,16 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
-let PORT =  8001
-if (process.env.FRONT_WEB_PORT) {
-  PORT = parseInt(process.env.FRONT_WEB_PORT)
+const env = loadEnv('', process.cwd());
+
+let PORT =  JSON.stringify(env.FRONT_WEB_PORT)
+if (PORT) {
+  PORT = parseInt(PORT)
+} else {
+  PORT = 8001
 }
 
 // https://vitejs.dev/config/
@@ -33,5 +37,8 @@ export default defineConfig({
     watch: {
       usePolling: true
     },
+  },
+  define: {
+    VITE_BACKEND_PATH: JSON.stringify(env.BACKEND_PATH),
   }
 })

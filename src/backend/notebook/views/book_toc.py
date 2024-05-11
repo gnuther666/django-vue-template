@@ -55,10 +55,11 @@ class BookTocViewset(viewsets.ModelViewSet):
                 'type': type,
                 'label': title,
             }
-            toc_obj = BookTocModel()
-            toc_obj.toc = toc_data
-            toc_obj.book_id = book_id
-            toc_obj.save()
+            toc_obj, _ = BookTocModel.objects.update_or_create(book_id=book_id,
+                                                            defaults={'toc': toc_data})
+            
+            resp = CommonResponse(data={'msg': '增加成功', 'data': toc_obj.toc}, code=200)
+            return resp
         else:
             ori_toc_obj = BookTocModel.objects.filter(book_id=book_id).first()
             if not ori_toc_obj:
@@ -76,7 +77,7 @@ class BookTocViewset(viewsets.ModelViewSet):
             })
             ori_toc_obj.toc = ori_toc
             ori_toc_obj.save()
-            resp = CommonResponse(data={'msg': '增加成功', 'data': ori_toc_obj.toc}, code=200)
+            resp = CommonResponse(data={'msg': '增加成功', 'data': ori_toc_obj.toc}, code=200) #
             return resp
     
     @action(methods=['POST'], detail=False)

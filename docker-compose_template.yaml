@@ -59,7 +59,7 @@ services:
       - ${DB_DATA_PATH}:/var/lib/mysql
       - ./META/DB/my.cnf:/etc/my.cnf
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:${DB_PORT}"
     env_file:
       - ./.env
     environment:
@@ -75,7 +75,7 @@ services:
     restart: always
     privileged: true
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:${REDIS_PORT}"
     volumes:
       - ./META/redis/redis.conf:/etc/redis/redis.conf:ro
       - ${REDIS_DATA_PATH}/redis/data:/data
@@ -87,26 +87,26 @@ services:
     networks:
       template_network:
         ipv4_address: ${REDIS_IP}
-  web:
-    image: nginx:1.25.2
-    container_name: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    privileged: true
-    volumes:
-      - ./META/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      # - ./META/nginx/hosts:/etc/hosts:ro
-      # - ./META/nginx/user_web:/user/web:ro
-      - ${HTML_ROOT}:/www:ro
-      # - ${IOT_DATA_PATH}/nginx:/var/log/nginx
-      # - /etc/letsencrypt/archive/manager.woozatop.com/fullchain2.pem:/ssl_pem/server.crt:ro
-      # - /etc/letsencrypt/archive/manager.woozatop.com/privkey2.pem:/ssl_pem/server.key:ro
-    env_file:
-      ./.env
-    networks:
-      hx_net:
-        ipv4_address: 173.0.0.8
+#PROD  web:
+#PROD    image: nginx:1.25.2
+#PROD    container_name: nginx
+#PROD    ports:
+#PROD      - "80:80"
+#PROD      - "443:443"
+#PROD    privileged: true
+#PROD    volumes:
+#PROD      - ./META/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+#PROD      # - ./META/nginx/hosts:/etc/hosts:ro
+#PROD      # - ./META/nginx/user_web:/user/web:ro
+#PROD      - ${HTML_ROOT}:/www:ro
+#PROD      # - ${IOT_DATA_PATH}/nginx:/var/log/nginx
+#PROD      # - /etc/letsencrypt/archive/manager.woozatop.com/fullchain2.pem:/ssl_pem/server.crt:ro
+#PROD      # - /etc/letsencrypt/archive/manager.woozatop.com/privkey2.pem:/ssl_pem/server.key:ro
+#PROD    env_file:
+#PROD      ./.env
+#PROD    networks:
+#PROD      template_network:
+#PROD        ipv4_address: ${NGINX_IP}
 
 networks:
   template_network:

@@ -66,7 +66,7 @@
 # ~ FIN ~
 
 [mysql]
-port                            = 3306
+port                            = $REPLACE_DB_PORT
 socket                          = /var/run/mysqld/mysqld.sock
 
 [mysqld]
@@ -78,7 +78,7 @@ datadir                         = /var/lib/mysql
 max_allowed_packet              = 256M
 max_connect_errors              = 1000000
 pid_file                        = /var/run/mysqld/mysqld.pid
-port                            = 3306
+port                            = $REPLACE_DB_PORT
 skip_external_locking
 skip_name_resolve
 socket                          = /var/run/mysqld/mysqld.sock
