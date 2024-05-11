@@ -19,37 +19,6 @@ services:
       template_network:
         ipv4_address: ${BACKEND_IP}
 
-  # frontend:
-  #   build:
-  #     context: .
-  #     dockerfile: .\META\frontWeb\Dockerfile
-  #   container_name: frontend
-  #   volumes:
-  #     - ./src/clientWeb:/web
-  #   ports:
-  #     - ${FRONT_WEB_PORT}:${FRONT_WEB_PORT}
-  #   command: sh start_up.sh
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     template_network:
-  #       ipv4_address: ${FRONTEND_IP}
-
-  # front_mb:
-  #   build:
-  #     context: .
-  #     dockerfile: .\META\frontMB\Dockerfile
-  #   container_name: front_mb
-  #   volumes:
-  #     - ./src/clientMB:/web
-  #   ports:
-  #     - ${FRONT_MB_PORT}:${FRONT_MB_PORT}
-  #   command: sh /web/start_up.sh
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     template_network:
-  #       ipv4_address: ${FRONTMB_IP}
 
   db:
     image: mysql:8.0
@@ -98,7 +67,7 @@ services:
 #PROD      - ./META/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 #PROD      # - ./META/nginx/hosts:/etc/hosts:ro
 #PROD      # - ./META/nginx/user_web:/user/web:ro
-#PROD      - ${HTML_ROOT}:/www:ro
+#PROD      - ${SYNC_SSH_FRONT_DIR}:/www:ro
 #PROD      # - ${IOT_DATA_PATH}/nginx:/var/log/nginx
 #PROD      # - /etc/letsencrypt/archive/manager.woozatop.com/fullchain2.pem:/ssl_pem/server.crt:ro
 #PROD      # - /etc/letsencrypt/archive/manager.woozatop.com/privkey2.pem:/ssl_pem/server.key:ro

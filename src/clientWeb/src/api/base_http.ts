@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const ServerUrl = import.meta.env.VITE_BACKEND_PATH
+export const ServerUrl = 'http://' + import.meta.env.VITE_BACKEND_PATH
 console.log('后端地址', ServerUrl)
 const http = axios.create({
   baseURL: ServerUrl, // 开发环境

@@ -1,9 +1,15 @@
 # 项目介绍
 django + vue + taro 管理系统模板
-模板提供基本的前后台分离框架，用来快捷的开发web和小程序  
+模板提供基本的前后台分离框架，用来快捷的开发web端 
 * 后台: python39 + django + rest + jwt + redis
 * web端: vite + vue + element-ui-plus
-* 小程序端: taro + vue
+
+## 项目启动
+* sudo apt install csvkit
+  > 用来进行配置参数csv文件的解析
+* 安装好docker，并且人docker-compose 的可执行性
+* 修改好配置参数
+
 
 ## 目录结构
 - META 容器配置相关
@@ -13,11 +19,7 @@ django + vue + taro 管理系统模板
 - docker-compose.yaml 项目启动文件
 - .env_example 运行项目前需要先查看文件内配置式是否符合要求，修改完后copy出.env文件到同级目录下
 
-## 项目启动
-* docker-compose up -d
-> 如果要全量启动项目，请对docker-compose.yaml内部分容器取消注释
-* web端本机访问: http://localhost:8001/login
-* 小程序端: http://localhost:8002/#/pages/index/index
+
 
 # 项目截图
 ## web端
