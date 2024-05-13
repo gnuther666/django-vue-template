@@ -83,4 +83,4 @@ class SetUp:
         os.system("python3 manage.py runserver 0.0.0.0:" + str(GetEnv().get_env().backend_port))
                 
 if __name__ == '__main__':
-    SetUp(only_setup=True).run()
+    SetUp(only_setup=False).run()

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+base_dir=`pwd`
 
 help() {
     echo "Usage: $0 [command]"
@@ -13,18 +13,18 @@ help() {
     echo "  build_front  Build front end."
     echo "  run_front  Run front end."
     echo "  run_full_dev  Run full dev."
-    echo "  run_full_prod  Run full prod."
-    echo "  zip_prod  Zip production files."
-    echo "  sftp_prod  Sftp production files."
     echo "  --help   Show this help."
 }
 
 sync() {
     echo "Syncing files..."
-    # Add your sync logic here
+    build_front
+    rsync -avz --exclude=venv --exclude=.vscode-upload.json --exclude=.env --exclude=.vscode --exclude=.git --exclude=clientWeb --exclude=my.cnf --exclude=nginx.conf --exclude=redis.conf  --exclude=__pycache__ /mnt/e/workspace/django-vue-template  root@117.50.187.148:/root
+    rsync -avz /mnt/e/workspace/django-vue-template/src/clientWeb/dist  root@117.50.187.148:/root
 }
 
 dev() {
+    clear
     awk -F ',' 'NR>1 {print $1 "=" $6}' env.csv > .env
     sed -i 's/\"\"\"/\"/g' .env
     source .env
@@ -32,6 +32,7 @@ dev() {
 }
 
 prod() {
+    clear
     awk -F ',' 'NR>1 {print $1 "=" $5}' env.csv > .env
     sed -i 's/\"\"\"/\"/g' .env
     source .env
@@ -47,7 +48,7 @@ clear() {
     rm -rf ./docker-compose.yaml
     rm -rf ./.env
     rm -rf ./backend.tar.gz
-    rm -rf ./dist.tar.gz
+    rm -rf ./src/clientWeb/dist/dist.tar.gz 
 }
 
 set_value() {
@@ -89,28 +90,7 @@ run_full_dev() {
     run_front
 }
 
-run_full_prod() {
-    prod
-    build_front
-    zip_prod
-    clear
-    
 
-}
-
-zip_prod() {
-    rm -rf dist.tar.gz backend.tar.gz
-    cd src/clientWeb/dist
-    tar czvf dist.tar.gz --exclude=dist.tar.gz  .
-    cp dist.tar.gz ../../../
-    cd -
-    tar czvf backend.tar.gz --exclude=src/clientWeb --exclude=.vscode --exclude=.git --exclude='__pycache__' --exclude=dist.tar.gz --exclude=backend.tar.gz --exclude=venv  .
-}
-
-sftp_prod() {
-    scp  backend.tar.gz  ${SYNC_SSH_USER}@${SYNC_SSH_IP}:${SYNC_SSH_BACKEND_DIR}
-    scp  dist.tar.gz  ${SYNC_SSH_USER}@${SYNC_SSH_IP}:${SYNC_SSH_FRONT_DIR}
-}
 
 # 参数处理
 case "$1" in
@@ -134,15 +114,6 @@ case "$1" in
         ;;
     run_full_dev)
         run_full_dev
-        ;;
-    zip_prod)
-        zip_prod
-        ;;
-    run_full_prod)
-        run_full_prod
-        ;;
-    sftp_prod)
-        sftp_prod
         ;;
     --help)
         help

@@ -5,10 +5,10 @@ django + vue + taro 管理系统模板
 * web端: vite + vue + element-ui-plus
 
 ## 项目启动
-* sudo apt install csvkit
-  > 用来进行配置参数csv文件的解析
-* 安装好docker，并且人docker-compose 的可执行性
-* 修改好配置参数
+* 安装依赖的docker, docker-compose
+* 修改好配置参数(具体参看配置参数章节)
+* 选择你要执行的版本 dev/prod 各自对应命令 bash build.bash [dev/prod]
+* 安装node v21.6.0
 
 
 ## 目录结构
