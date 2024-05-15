@@ -59,7 +59,11 @@ onUpdated(() => {
 function getToc() {
     if (local_value.value.current_book_id !== undefined) {
         getTocBooks(local_value.value.current_book_id).then((res: any) => {
-            local_value.value.toc = res.data
+            if (res.data === null) {
+                local_value.value.toc = undefined
+            } else {
+                local_value.value.toc = res.data
+            }
         })
     }
 }

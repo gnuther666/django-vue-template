@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from notebook.models.user_books import BookDocsModel
+from notebook.models.user_books import BookDocsModel, DocImages
 from rest_framework import viewsets
 import logging
+from util.read_env import get_web_res_web_url
 from rest_framework.permissions import IsAuthenticated
 from util.response import CommonResponse
 from rest_framework.decorators import action
@@ -40,24 +41,26 @@ class BookDocViewset(viewsets.ModelViewSet):
         resp = CommonResponse(data={'msg': '获取成功', 'data': None}, code=200)
         return resp
     
-    @action(methods=['POST'], detail=False)
-    def delete_book(self, request, *args, **kwargs):
-        user = request.user
-        book_id = request.data['book_id']
-        book = UserBooksModel.objects.filter(user_id=user.id, id=book_id).delete()
-        resp = CommonResponse(data={'msg': '删除成功', 'data': None}, code=200)
-        return resp
     
     @action(methods=['POST'], detail=False)
-    def update_book(self, request, *args, **kwargs):
-        user = request.user
-        book = UserBooksModel.objects.filter(user_id=user.id, id=request.data['book_id']).first()
-        if book:
-            book.book_name = request.data['book_name']
-            book.save()
-            return CommonResponse(data={'msg': '修改成功:%s' % (request.data['book_id'], ), 'data': {'id': book.id, 'book_name': book.book_name}}, code=200)
+    def upload_image(self, request, *args, **kwargs):
+        book_id = request.data['book_id']
+        doc_id = request.data['doc_id']
+        file = request.FILES['image']
+        logger.debug(request.FILES)
+        is_valid, doc = self.check_doc_id_valid(doc_id)
+        if not is_valid:
+            return doc
+        if file:
+            image_obj = DocImages()
+            image_obj.book_id = book_id
+            image_obj.doc_id = doc_id
+            image_obj.image = file
+            image_obj.save()
+            real_path = get_web_res_web_url(image_obj.image.url)
+            return CommonResponse(data={'msg': '上传成功', 'data': {'path': real_path, 'id': image_obj.id}}, code=200)
         else:
-            return CommonResponse(data={'msg': '未找到对应笔记簿:%s' % (request.data['book_id'], ), 'data': None}, code=201)
+            return CommonResponse(data={'msg': '参数错误, 缺少image', 'data': None}, code=400)
         
     def check_doc_id_valid(self, doc_id):
         if not doc_id:

@@ -19,6 +19,8 @@ class EnvConfig:
     backend_port: int
     media_path: str
     log_path: str
+    backend_url: str
+    is_https: bool
 
 class GetEnv:
     _instance = None
@@ -39,7 +41,13 @@ class GetEnv:
                 'backend_port': os.environ.get('BACKEND_PORT', None),
                 'media_path': os.environ.get('BACKEND_MEDIA_PATH', None),
                 'log_path': os.environ.get('BACKEND_LOG_PATH', None),
+                'backend_url': os.environ.get('BACKEND_ADDR', None),
+                'is_https': os.environ.get('IS_HTTPS', 'FALSE')
             }
+            if env_vars['is_https'] == 'FALSE':
+                env_vars['is_https'] = False
+            else:
+                env_vars['is_https'] = True
             for key, value in env_vars.items():
                 if value is None:
                     raise RuntimeError(f'Environment variable {key} is not set')
@@ -52,3 +60,14 @@ class GetEnv:
 
     def get_env(self) -> EnvConfig:
         return GetEnv._loaded_env
+    
+def get_web_res_web_url(local_path):
+    if local_path.find('/backend/media/') == -1:
+        new_path = '/backend/media/' + local_path
+    else:
+        new_path = local_path
+    full_path = GetEnv().get_env().backend_url + new_path
+    full_path = full_path.replace('//', '/')
+    full_path = 'https://' if GetEnv().get_env().is_https else 'http://' + full_path
+    return full_path
+

@@ -5,7 +5,7 @@ import logging
 from rest_framework.permissions import IsAuthenticated
 from util.response import CommonResponse
 from rest_framework.decorators import action
-from notebook.utils.findDocWithId import findDocWithId
+from notebook.utils.TocTree import MyTocTree
 
 logger = logging.getLogger('django')
 
@@ -24,15 +24,14 @@ class BookTocViewset(viewsets.ModelViewSet):
     @action(methods=['GET'], detail=False)
     def get_tocs(self, request, *args, **kwargs):
         user = request.user
-        book = BookTocModel.objects.filter(book_id=request.GET.get('book_id')).first()
+        book_id = request.GET.get('book_id')
+        book = BookTocModel.objects.filter(book_id=book_id).first()
         if book:
-            return CommonResponse(data={'msg': '获取成功', 'data': book.toc}, code=200)
+            tree_obj = MyTocTree(book.toc)
+            logger.error(f'tree_str:{tree_obj.toSaveStr()}')
+            return CommonResponse(data={'msg': '获取成功', 'data': tree_obj.toFrontEndFormat()}, code=200)
         else:
-            toc = BookTocModel()
-            toc.toc = {}
-            toc.book_id = request.GET.get('book_id')
-            toc.save()
-            return CommonResponse(data={'msg': '获取成功', 'data': toc.toc}, code=200)
+            return CommonResponse(data={'msg': '获取成功', 'data': None}, code=200)
 
     
     @action(methods=['POST'], detail=False)
@@ -48,54 +47,72 @@ class BookTocViewset(viewsets.ModelViewSet):
         doc.content = 'empty'
         doc.book_id = book_id
         doc.save()
-
+        precheck_toc = BookTocModel.objects.filter(book_id=book_id).first()
+        if not precheck_toc:
+            precheck_toc = BookTocModel()
+            precheck_toc.book_id = book_id
+            precheck_toc.toc = MyTocTree(None).toSaveStr()
+            precheck_toc.save()
+        precheck_tree = MyTocTree(precheck_toc.toc)
+    
         if parent_id == 0:
-            toc_data = {
-                'id': doc.id,
-                'type': type,
-                'label': title,
-            }
-            toc_obj, _ = BookTocModel.objects.update_or_create(book_id=book_id,
-                                                            defaults={'toc': toc_data})
-            
-            resp = CommonResponse(data={'msg': '增加成功', 'data': toc_obj.toc}, code=200)
+            if not precheck_tree.is_tree_empty():
+                return CommonResponse(data={'msg': '目录不为空，不能从根目录进行创建', 'data': None}, code=201)
+            precheck_tree.addDocToToc(title, doc.id)
+            precheck_toc.toc = precheck_tree.toSaveStr()
+            precheck_toc.save() 
+            resp = CommonResponse(data={'msg': '增加成功', 'data': precheck_tree.toFrontEndFormat()}, code=200)
             return resp
         else:
-            ori_toc_obj = BookTocModel.objects.filter(book_id=book_id).first()
-            if not ori_toc_obj:
-                return CommonResponse(data={'msg': '未找到目录文件', 'data': None}, code=201)
-            ori_toc = ori_toc_obj.toc
-            insert_node = findDocWithId(ori_toc, parent_id)
-            if insert_node is None:
-                return CommonResponse(data={'msg': f'未找到指定节点 book_id:{book_id}, parent_id:{parent_id}', 'data': None}, code=201)
-            if insert_node.get('children') is None:
-                insert_node['children'] = []
-            insert_node['children'].append({
-                'id': doc.id,
-                'type': type,
-                'label': title,
-            })
-            ori_toc_obj.toc = ori_toc
-            ori_toc_obj.save()
-            resp = CommonResponse(data={'msg': '增加成功', 'data': ori_toc_obj.toc}, code=200) #
+            node = precheck_tree.findNodeWithId(parent_id)
+            if node is None:
+                return CommonResponse(data={'msg': '未找到父级目录', 'data': None}, code=201)
+            precheck_tree.addDocToToc(title, doc.id, parent_id)
+            precheck_toc.toc = precheck_tree.toSaveStr()
+            precheck_toc.save()
+            resp = CommonResponse(data={'msg': '增加成功', 'data': precheck_tree.toFrontEndFormat()}, code=200) #
             return resp
     
     @action(methods=['POST'], detail=False)
-    def delete_book(self, request, *args, **kwargs):
+    def delete_note(self, request, *args, **kwargs):
         user = request.user
         book_id = request.data['book_id']
-        book = UserBooksModel.objects.filter(user_id=user.id, id=book_id).delete()
-        resp = CommonResponse(data={'msg': '删除成功', 'data': None}, code=200)
+        doc_id = request.data['doc_id']
+        toc_model_obj = BookTocModel.objects.filter(book_id=book_id).first()
+        toc_tree_obj = MyTocTree(toc_model_obj.toc)
+        need_delete_doc_id = [one.identifier for one in toc_tree_obj.getNodeAllChildrens(doc_id)]
+        BookDocsModel.objects.filter(id__in=need_delete_doc_id).delete()
+        toc_tree_obj.deleteDoc(doc_id)
+        logger.debug(toc_tree_obj.toFrontEndFormat()) 
+        toc_model_obj.toc = toc_tree_obj.toSaveStr()
+        toc_model_obj.save()
+        resp = CommonResponse(data={'msg': '删除成功', 'data': need_delete_doc_id}, code=200)
         return resp
     
     @action(methods=['POST'], detail=False)
-    def update_book(self, request, *args, **kwargs):
+    def rename_note(self, request, *args, **kwargs):
         user = request.user
-        book = UserBooksModel.objects.filter(user_id=user.id, id=request.data['book_id']).first()
-        if book:
-            book.book_name = request.data['book_name']
-            book.save()
-            return CommonResponse(data={'msg': '修改成功:%s' % (request.data['book_id'], ), 'data': {'id': book.id, 'book_name': book.book_name}}, code=200)
-        else:
-            return CommonResponse(data={'msg': '未找到对应笔记簿:%s' % (request.data['book_id'], ), 'data': None}, code=201)
+        book_id = request.data['book_id']
+        doc_id = request.data['doc_id']
+        title = request.data['title']
+        toc_model_obj = BookTocModel.objects.filter(book_id=book_id).first()
+        toc_tree_obj = MyTocTree(toc_model_obj.toc)
+        toc_tree_obj.renameDocName(doc_id, title)
+        toc_model_obj.toc = toc_tree_obj.toSaveStr()
+        toc_model_obj.save()
+        return CommonResponse(data={'msg': '修改成功:%s' % (request.data['book_id'], ), 'data': None}, code=200)
+    
+    @action(methods=['POST'], detail=False)
+    def move_note(self, request, *args, **kwargs):
+        user = request.user
+        book_id = request.data['book_id']
+        doc_id = request.data['doc_id']
+        parent_id = request.data['parent_id']
+        toc_model_obj = BookTocModel.objects.filter(book_id=book_id).first()
+        toc_tree_obj = MyTocTree(toc_model_obj.toc)
+        toc_tree_obj.moveDocTo(doc_id, parent_id)
+        toc_model_obj.toc = toc_tree_obj.toSaveStr()
+        toc_model_obj.save()
+        return CommonResponse(data={'msg': '修改成功:%s' % (request.data['book_id'], ), 'data': None}, code=200)
+    
     

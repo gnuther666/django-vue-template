@@ -26,3 +26,7 @@ export function put<T>(url: string, data?: any): Promise<T> {
 export function del<T>(url: string, params?: any): Promise<T> {
     return http.delete(url, { params })
 }
+
+export function post_form<T>(url: string, params?: any): Promise<T> {
+    return http.post(url, params, {'headers': {'Content-Type': 'multipart/form-data'}})
+}

@@ -27,7 +27,16 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(log_path, 'all-{}.log'.format(time.strftime('%Y-%m-%d'))),
             'maxBytes': 1024 * 1024 * 5,  # 文件大小
-            'backupCount': 3,  # 备份数
+            'backupCount': 2,  # 备份数
+            'formatter': 'standard',  # 输出格式
+            'encoding': 'utf-8',  # 设置默认编码，否则打印出来汉字乱码
+        },
+        'db': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(log_path, 'db-{}.log'.format(time.strftime('%Y-%m-%d'))),
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 2,  # 备份数
             'formatter': 'standard',  # 输出格式
             'encoding': 'utf-8',  # 设置默认编码，否则打印出来汉字乱码
         },
@@ -37,7 +46,7 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(log_path, 'error-{}.log'.format(time.strftime('%Y-%m-%d'))),
             'maxBytes': 1024 * 1024 * 5,  # 文件大小
-            'backupCount': 5,  # 备份数
+            'backupCount': 2,  # 备份数
             'formatter': 'standard',  # 输出格式
             'encoding': 'utf-8',  # 设置默认编码
         },
@@ -73,7 +82,7 @@ LOGGING = {
             'propagate': True
         },
         'django.db.backends': {
-            'handlers': ['console', 'default'],
+            'handlers': ['db'],
             'propagate': True,
             'level':'DEBUG',
         },
@@ -82,5 +91,10 @@ LOGGING = {
             'handlers': ['console'],  # 可以替换为你实际使用的 handler 名称
             'propagate': False,  # 防止这个日志向上级 logger 传播
         },
+        'base': {
+            'handlers': ['console', 'default'],
+            'level': 'WARNING',
+            'propagate': False
+        }
     }
 }

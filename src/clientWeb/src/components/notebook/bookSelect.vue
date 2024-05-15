@@ -227,7 +227,7 @@ onUnmounted(() => {
                 local_value.is_close = !local_value.is_close
             }" link><el-icon>
                     <ArrowLeftBold />
-                </el-icon> {{ getCurrentSelectBookName() }}</el-button>
+                </el-icon></el-button>
             <el-button v-if="!local_value.is_close" v-for="(value, key) in local_value.books" :key="key"
                 @click="handleNormalBookClicked(key)" @dblclick.native="handleNormalBookDoubleClick(key)"
                 :type="key === local_value.current_select_index ? 'primary' : 'info'">
@@ -244,7 +244,7 @@ onUnmounted(() => {
 
         <div :style="{ display: local_value.is_close ? 'none' : 'block' }">
             <tocTree :book_id="local_value.current_select_index" @doc_change="(doc_id)=>{
-                emits('book_id_change', doc_id)
+                emits('book_id_change', doc_id, local_value.current_select_index)
             }"/>
         </div>
     </main>

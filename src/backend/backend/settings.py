@@ -179,7 +179,7 @@ SIMPLE_JWT = {
 
 
 ## 资源存储 START
-STATIC_URL = 'static/'
+STATIC_URL = 'backend/static/'
 MEDIA_ROOT = GetEnv().get_env().media_path
 MEDIA_URL = 'backend/media/'
 ## 资源存储 END

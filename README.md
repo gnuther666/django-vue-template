@@ -6,10 +6,13 @@ django + vue + taro 管理系统模板
 
 ## 项目启动
 * 安装依赖的docker, docker-compose
-* 修改好配置参数(具体参看配置参数章节)
-* 选择你要执行的版本 dev/prod 各自对应命令 bash build.bash [dev/prod]
 * 安装node v21.6.0
+* 修改对应参数
+* 执行启动脚本
+    ![build](./doc/build_bash_image.jpg)
 
+## 关于参数文件 env.csv
+![env.csv](./doc/config.jpg)
 
 ## 目录结构
 - META 容器配置相关
