@@ -8,8 +8,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from util.response import CommonResponse
 from app.models.app_user import AppUserModel
 from util.redis_cache import RedisCache
+from util.read_env import GetEnv
 import logging
 
+captcha_method = GetEnv().get_env().captcha
 logger = logging.getLogger('django')
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -17,12 +19,12 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
         username = request.data.get('username')
         password = request.data.get('password')
-        verify_key = request.data.get('verify_key')
-        verify_input = request.data.get('verify_input')
-        logger.debug(f'用户登录信息:username={username}, password={password}, verify_key={verify_key}, verify_input={verify_input}')
-        verify_result = RedisCache.verify_captcha_from_redis(verify_key, verify_input)
-        if verify_result.is_success == False:
-            return CommonResponse(data={'msg': f'验证码错误:{verify_result.msg}'}, code=201)
+        
+        logger.debug(f'用户登录信息:username={username}, password={password}')
+        if captcha_method in ['base', ]:
+            check_success, error_msg = self.__verify_captcha(request)
+            if not check_success:
+                return CommonResponse(data={'msg': f'验证码错误:{error_msg}'}, code=201)
         user = None
 
         user = AppUserModel.objects.filter(username=username).first()
@@ -38,4 +40,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             'refresh_token': str(refresh),
             'username': user.username
         }
-        return CommonResponse(data={'data': modified_response}, code=200)
+        return CommonResponse(data={'data': modified_response}, code=201)
+    
+    def __verify_captcha(self, request):
+        verify_key = request.data.get('verify_key')
+        verify_input = request.data.get('verify_input')
+        logger.debug(f'用户验证信息:verify_key={verify_key}, verify_input={verify_input}')
+        verify_result = RedisCache.verify_captcha_from_redis(verify_key, verify_input)
+        if verify_result.is_success == False:
+            return False, verify_result.msg
+        return True, 'success'

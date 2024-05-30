@@ -171,7 +171,7 @@ function DocClicked(data: TocStruct) {
 </template>
 
 <style scoped>
-@media (min-width: 601px) {
+@media (min-width: 901px) {
     .tree_window {
         width: 20vw;
         height: 60vh;

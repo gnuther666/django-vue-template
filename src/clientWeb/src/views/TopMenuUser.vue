@@ -28,7 +28,7 @@ onMounted(() => {
 </template>
 
 <style>
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .user_info {
     margin-left: 2px;
   }
@@ -42,7 +42,7 @@ onMounted(() => {
 }
 }
 
-@media (min-width: 601px) {
+@media (min-width: 901px) {
   .user_info {
     height: 100%;
     margin-right: 20px;

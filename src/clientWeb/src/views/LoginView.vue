@@ -131,7 +131,7 @@ const onSubmit = () => {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .top_title {
     width: 70vw;
     margin-top: 15vh;
@@ -183,7 +183,7 @@ const onSubmit = () => {
 
 }
 
-@media (min-width: 601px) {
+@media (min-width: 901px) {
   .top_title {
     width: 40vw;
     margin-top: 15vh;

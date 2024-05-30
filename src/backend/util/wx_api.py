@@ -3,6 +3,8 @@ from django.conf import settings
 from django.utils import timezone
 from datetime import date, time, timedelta
 from typing import Tuple, List
+from django.http import HttpRequest
+from dataclasses import dataclass
 import logging
 
 
@@ -140,3 +142,32 @@ class WxLogin:
 
         return "OK"
 
+@dataclass
+class WeiXinSideUserInfo:
+    openid: str
+    session_key: str
+    unionid: int
+    country_code: str
+    phone_number: str
+
+def wx_login_process(request: HttpRequest) -> tuple[bool, WeiXinSideUserInfo]:
+    try:
+        data = json.loads(request.body)
+        phone_data = data["verify"]
+        code = phone_data["code"]
+        login_code = phone_data["loginCode"]
+    except Exception as err:
+        return False, "weixin login api failed, parameter_error, body:{}".format(request.body)
+    try:
+        openid, session_key, unionid = WxLogin.jscode2session(login_code)
+        country_code, phone_number = WxLogin.get_phone_number(code)
+    except json.JSONDecodeError as err:
+        return False, 'login error json decode error:{}'.format(err)
+    except requests.HTTPError as err:
+        return False, 'login error http error:{}'.format(err)
+    except WeixinApiError as err:
+        return False, 'login error weixin api error:{}'.format(err)
+    except Exception as err:
+        return False, 'login error:{}'.format(err)
+    collect_wx_login_info = WeiXinSideUserInfo(openid, session_key, unionid, country_code, phone_number)
+    return True , collect_wx_login_info

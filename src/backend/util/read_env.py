@@ -21,6 +21,7 @@ class EnvConfig:
     log_path: str
     backend_url: str
     is_https: bool
+    captcha: str
 
 class GetEnv:
     _instance = None
@@ -42,7 +43,8 @@ class GetEnv:
                 'media_path': os.environ.get('BACKEND_MEDIA_PATH', None),
                 'log_path': os.environ.get('BACKEND_LOG_PATH', None),
                 'backend_url': os.environ.get('BACKEND_ADDR', None),
-                'is_https': os.environ.get('IS_HTTPS', 'FALSE')
+                'is_https': os.environ.get('IS_HTTPS', 'FALSE'),
+                'captcha': os.environ.get('CAPTCHA', None)
             }
             if env_vars['is_https'] == 'FALSE':
                 env_vars['is_https'] = False

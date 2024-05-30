@@ -51,10 +51,12 @@ function onMobileMenuButtonClicked(event) {
 const MobileDrawerDirection = ref<any>('ltr')
 onMounted(() => {
   window.addEventListener('resize', updateMenuProps);
+  window.addEventListener('load', updateMenuProps);
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateMenuProps);
+  window.removeEventListener('load', updateMenuProps);
 })
 </script>
 
@@ -116,7 +118,7 @@ onUnmounted(() => {
 </template>
 
 <style>
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .homepage_logo {
     height: 5vh;
     position: absolute;
@@ -126,7 +128,7 @@ onUnmounted(() => {
   }
 }
 
-@media (min-width: 601px) {
+@media (min-width: 901px) {
   .homepage_logo {
     height: 60%;
     position: relative;

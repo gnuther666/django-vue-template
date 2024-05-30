@@ -46,3 +46,7 @@ class ExampleLoginedViewset(viewsets.ModelViewSet):
         if not is_success:
             return CommonResponse(data={'data': '文件上传失败', 'msg': '文件上传失败'}, code=201)
         return CommonResponse(data={'data': '文件上传成功', 'msg': f'文件上传成功{str(file_struct)}'}, code=200)
+    
+    @action(methods=['GET', ], detail=False)
+    def get_test_logined(self, request, *args, **kwargs):
+        return CommonResponse(data={'data': 'user logined'}, code=200)

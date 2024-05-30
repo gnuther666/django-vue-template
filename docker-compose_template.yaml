@@ -12,6 +12,7 @@ services:
       - ${BACKEND_PORT}:${BACKEND_PORT}
     depends_on:
       - db
+      - redis
     command: python3 setup.py
     env_file:
       - .env
