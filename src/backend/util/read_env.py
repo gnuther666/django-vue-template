@@ -14,7 +14,8 @@ class EnvConfig:
     super_user_name: str
     super_user_password: str
     redis_ip: str
-    redis_password: str
+    redis_password: str,
+    redis_port: int,
     data_path: str
     backend_port: int
     media_path: str
@@ -38,6 +39,7 @@ class GetEnv:
                 'super_user_password': os.environ.get('SUPER_USER_PASSWORD', None),
                 'redis_ip': os.environ.get('REDIS_IP', None),
                 'redis_password': os.environ.get('REDIS_PASSWORD', None),
+                'redis_port': os.environ.get('REDIS_PORT', 6379),
                 'data_path': os.environ.get('BACKEND_INNER_PATH', None),
                 'backend_port': os.environ.get('BACKEND_PORT', None),
                 'media_path': os.environ.get('BACKEND_MEDIA_PATH', None),
@@ -55,6 +57,7 @@ class GetEnv:
                     raise RuntimeError(f'Environment variable {key} is not set')
             try:
                 env_vars['db_port'] = int(env_vars['db_port'])
+                env_vars['redis_port'] = int(env_vars['redis_port'])
             except ValueError:
                 raise RuntimeError(f'Environment variable db_port type is not integer')
             cls._loaded_env = EnvConfig(**{k: v for k, v in env_vars.items() if v is not None})
@@ -64,10 +67,11 @@ class GetEnv:
         return GetEnv._loaded_env
     
 def get_web_res_web_url(local_path):
-    if local_path.find('/backend/media/') == -1:
-        new_path = '/backend/media/' + local_path
+    use_local_path = local_path.replace(GetEnv().get_env().media_path, '')
+    if use_local_path.find('/backend/media/') == -1:
+        new_path = '/backend/media/' + use_local_path
     else:
-        new_path = local_path
+        new_path = use_local_path
     full_path = GetEnv().get_env().backend_url + new_path
     full_path = full_path.replace('//', '/')
     full_path = 'https://' if GetEnv().get_env().is_https else 'http://' + full_path

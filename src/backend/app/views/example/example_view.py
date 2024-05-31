@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from util.response import CommonResponse
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from util.read_env import GetEnv
+from util.read_env import GetEnv, get_web_res_web_url
 from django.conf import settings
 from util.file_process import UserFileProcess, FileStruct
 
@@ -45,7 +45,8 @@ class ExampleLoginedViewset(viewsets.ModelViewSet):
         is_success, file_struct = UserFileProcess.handle_upload_file_return_full_info(file, ori_file_name, 'settle')
         if not is_success:
             return CommonResponse(data={'data': '文件上传失败', 'msg': '文件上传失败'}, code=201)
-        return CommonResponse(data={'data': '文件上传成功', 'msg': f'文件上传成功{str(file_struct)}'}, code=200)
+        real_path = get_web_res_web_url(file_struct.file_path)
+        return CommonResponse(data={'data': real_path, 'msg': f'文件上传成功{str(file_struct)}'}, code=200)
     
     @action(methods=['GET', ], detail=False)
     def get_test_logined(self, request, *args, **kwargs):

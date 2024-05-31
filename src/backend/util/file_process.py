@@ -19,8 +19,10 @@ class FileStruct(object):
     file_md5: str
     file_size: int
 
-class UserFileProcess:
+    def __str__(self):
+        return f"file_name={self.file_name}, file_path={self.file_path}, file_md5={self.file_md5}, file_size={self.file_size}"
 
+class UserFileProcess:
     @staticmethod
     def download_file(file_path, file_name):
         # 获取文件路径或从数据库中获取文件内容等
@@ -46,6 +48,8 @@ class UserFileProcess:
         file_name = '{typename}_{date_str}_{random}.{extension}'.format(typename=type_name,
                                                                         date_str=datetime.now().strftime('%Y%m%d'),
                                                                         random=file_uuid, extension=file_extension)
+        if not os.path.exists(settings.MEDIA_ROOT):
+            os.makedirs(settings.MEDIA_ROOT)
         full_file_name = os.path.join(settings.MEDIA_ROOT, file_name)
         with open(full_file_name, 'wb+') as destination:
             for chunk in f.chunks():

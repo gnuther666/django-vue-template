@@ -105,7 +105,7 @@ CACHES = {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://:{auth}@{host}:{port}/{db}".format(auth=GetEnv().get_env().redis_password,
                                                                 host=GetEnv().get_env().redis_ip,
-                                                                port=6379,
+                                                                port=GetEnv().get_env().redis_port,
                                                                 db=0
                                                                 ),
         "OPTIONS": {
