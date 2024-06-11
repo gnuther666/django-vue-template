@@ -10,3 +10,4 @@ nginx.conf
 redis.conf
 backend.tar.gz
 dist.tar.gz
+.idea
