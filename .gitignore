@@ -1,5 +1,6 @@
 .env
 .env_pord
+env.csv
 *.pyc
 *__pycache__*
 Python-3.9.0.tgz

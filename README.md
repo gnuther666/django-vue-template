@@ -1,36 +1,38 @@
-# 项目介绍
-django + vue + taro 管理系统模板
-模板提供基本的前后台分离框架，用来快捷的开发web端 
-* 后台: python39 + django + rest + jwt + redis
-* web端: vite + vue + element-ui-plus
+# project introduce
+django + vue + taro management system template  
+Template based on front and rear end separation  
+include feature:
+- jwt login/logout
 
-## 项目启动
-* 安装依赖的docker, docker-compose
-* 安装node v21.6.0
-* 修改对应参数
-* 执行启动脚本
-    ![build](./doc/build_bash_image.jpg)
 
-## 关于参数文件 env.csv
+## requirements list
+* host machine requirement
+  * docker/docker-compose
+  * python3.x
+* technical points involved in the code
+  * backend: python39 + django + rest + jwt + redis
+  * frontend: vite + vue + element-ui-plus
+
+## how to startup project
+1. copy the env_template.csv to env.csv and write your config.
 ![env.csv](./doc/config.jpg)
+2. use build.py generate config file(such as nginx,mysql,...)
+![build](./doc/build_bash_image.jpg)
+
 
 ## 目录结构
-- META 容器配置相关
-- src/backend python后端
-- src/clientMB taro小程序端
-- src/clientWeb vue网页端
-- docker-compose.yaml 项目启动文件
-- .env_example 运行项目前需要先查看文件内配置式是否符合要求，修改完后copy出.env文件到同级目录下
+- __META__ container related
+- __src/backend__ python backend
+- __src/clientWeb__ vue frontend
+- __build.py__ many tools help you run this project
 
 
+# project's screenshot
+1. login
+![login](./doc/login.jpg)
 
-# 项目截图
-## web端
-1. 登录
-![登录](./doc/login.jpg)
-
-2. 示例页
-![示例](./doc/example.jpg)
+2. fileupload and download
+![file](./doc/example.jpg)
 
 
 
@@ -39,19 +41,9 @@ django + vue + taro 管理系统模板
 
 
 # 开发进度
-* [ ] web端
-  * [x] 账户密码登录
-  * [x] 文件上传和下载
+* [ ] frontend
+  * [x] account login and logout
+  * [x] fileupload and download
 
 
-# 积累
-## 热更新
-1. wsl2 required
-2. sudo apt install watchman
-3. add this scope code to vite.config.ts
-  ```json
-  watch: {
-      usePolling: true,
-      interval: 1000,
-    },
-  ```
+
