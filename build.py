@@ -118,7 +118,9 @@ class Build:
                     lines[index] = lines[index].replace('$REPLACE_REDIS_PORT', self.env_dict['REDIS_PORT'])
                 if value.find('$REPLACE_REDIS_PASSWORD') != -1:
                     lines[index] = lines[index].replace('$REPLACE_REDIS_PASSWORD', self.env_dict['REDIS_PASSWORD'])
-
+            with open('./META/redis/redis.conf', 'w', encoding='utf-8') as file2:
+                for line in lines:
+                    file2.write(line)
         # save docker-compose.yaml
         with open('docker-compose_template.yaml', 'r', encoding='utf-8') as file:
             lines = file.readlines()

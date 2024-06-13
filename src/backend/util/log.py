@@ -1,5 +1,5 @@
 import time, os
-from util.read_env import GetEnv
+from public_tools.tools.read_env import GetEnv
 
 log_path = GetEnv().get_env().log_path
 if not os.path.exists(log_path): os.mkdir(log_path)  # 如果不存在这个logs文件夹，则就自动创建一个 

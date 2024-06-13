@@ -1,7 +1,7 @@
 from util.captcha import Captcha
 from util.response import CommonResponse
 from util.redis_cache import RedisCache
-from util.read_env import GetEnv
+from public_tools.tools.read_env import GetEnv
 
 
 def get_captcha(request):

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from notebook.models.user_books import BookDocsModel, DocImages
 from rest_framework import viewsets
 import logging
-from util.read_env import get_web_res_web_url
+from public_tools.tools.read_env import get_web_res_web_url
 from rest_framework.permissions import IsAuthenticated
 from util.response import CommonResponse
 from rest_framework.decorators import action

@@ -1,6 +1,3 @@
-import os
-
-
 from dataclasses import dataclass
 import os
 
@@ -14,8 +11,8 @@ class EnvConfig:
     super_user_name: str
     super_user_password: str
     redis_ip: str
-    redis_password: str,
-    redis_port: int,
+    redis_password: str
+    redis_port: int
     data_path: str
     backend_port: int
     media_path: str

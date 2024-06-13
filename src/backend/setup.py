@@ -1,6 +1,6 @@
 import pymysql.cursors
 import os, time
-from util.read_env import GetEnv
+from public_tools.tools.read_env import GetEnv
 
 class SetUp:
     def __init__(self, only_setup=False):
@@ -12,11 +12,11 @@ class SetUp:
             while True:
                 time.sleep(3)
         else:
-            self.__pre_check_db()
-            self.__copy_example_data()
-            self.__finally_setup_server()
+            self.step1_init_db()
+            self.step2_copy_example_data()
+            self.fianlly_setup_server()
 
-    def __pre_check_db(self):
+    def step1_init_db(self):
         try:
             connection = pymysql.connect(host=GetEnv().get_env().db_ip,
                                 user='root',
@@ -72,15 +72,15 @@ class SetUp:
         finally:
             connection.close()
 
-    def __copy_example_data(self):
+    def step2_copy_example_data(self):
         source_dir = './example_resource'
         dist_dir = os.path.join(GetEnv().get_env().media_path, 'example_resource')
         cmd = f'mkdir -p {dist_dir} && cp -rf {source_dir}/* {dist_dir}'
         print('执行拷贝命令：' + cmd)
         os.system(cmd)
 
-    def __finally_setup_server(self):
+    def fianlly_setup_server(self):
         os.system("python3 manage.py runserver 0.0.0.0:" + str(GetEnv().get_env().backend_port))
                 
 if __name__ == '__main__':
-    SetUp(only_setup=True).run()
+    SetUp(only_setup=False).run()

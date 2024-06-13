@@ -5,10 +5,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from util.response import CommonResponse
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from util.read_env import GetEnv, get_web_res_web_url
+from public_tools.tools.read_env import GetEnv, get_web_res_web_url
 from django.conf import settings
-from util.file_process import UserFileProcess, FileStruct
-
+from util.file_process import UserFileProcess
 
 logger = logging.getLogger('django')
 
