@@ -21,16 +21,18 @@ class AppUserModel(AbstractUser):
         if not obj:
             obj = AppUserModel()
             obj.id = uuid.uuid4().hex
-        ori_password = GetEnv().get_env().super_user_password
-        obj.password = make_password(ori_password)
-        obj.is_superuser = True
-        obj.username = GetEnv().get_env().super_user_name
-        obj.email = 'default_super_user@example.com'
-        obj.is_staff = True
-        obj.is_active = True
-        obj.phone = '18812345678'
-        obj.save()
-        print('生成默认超级用户成功')
+            ori_password = GetEnv().get_env().super_user_password
+            obj.password = make_password(ori_password)
+            obj.is_superuser = True
+            obj.username = GetEnv().get_env().super_user_name
+            obj.email = 'default_super_user@example.com'
+            obj.is_staff = True
+            obj.is_active = True
+            obj.phone = '18812345678'
+            obj.save()
+            print('generate super user success')
+        else:
+            print('exist super user ,ignore')
 
     @staticmethod
     def check_password(username, password):

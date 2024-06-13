@@ -3,6 +3,8 @@ django + vue + taro management system template
 Template based on front and rear end separation  
 include feature:
 - jwt login/logout
+- celery task
+- test scope
 
 
 ## requirements list

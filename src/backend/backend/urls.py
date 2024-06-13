@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenRefreshView
+
 from app.views.login.login_view import CustomTokenObtainPairView
 from app.views.login.captcha_view import get_captcha
 from app.views.example.example_view import ExampleViewset, ExampleLoginedViewset
@@ -38,5 +40,6 @@ urlpatterns = [
     path('backend/admin/', admin.site.urls),
     path('backend/api/', include(router.urls)),
     path('backend/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('backend/refresh_token/', TokenRefreshView.as_view(), name='token_refresh'),
     path('backend/captcha/', get_captcha),
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

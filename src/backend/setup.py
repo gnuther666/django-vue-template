@@ -1,6 +1,7 @@
 import pymysql.cursors
 import os, time
 from public_tools.tools.read_env import GetEnv
+from multiprocessing import Process
 
 class SetUp:
     def __init__(self, only_setup=False):
@@ -14,7 +15,7 @@ class SetUp:
         else:
             self.step1_init_db()
             self.step2_copy_example_data()
-            self.fianlly_setup_server()
+            self.finally_setup()
 
     def step1_init_db(self):
         try:
@@ -79,8 +80,25 @@ class SetUp:
         print('执行拷贝命令：' + cmd)
         os.system(cmd)
 
-    def fianlly_setup_server(self):
+    def __setup_django(self):
         os.system("python3 manage.py runserver 0.0.0.0:" + str(GetEnv().get_env().backend_port))
+
+    def __setup_celery_worker(self):
+        os.system('python3 -m celery -A backend worker -l info')
+
+    def __setup_celery_beat(self):
+        os.system('python3 -m celery -A backend beat')
+
+    def finally_setup(self):
+        p1 = Process(target=self.__setup_django)
+        p2 = Process(target=self.__setup_celery_worker)
+        p3 = Process(target=self.__setup_celery_beat)
+        p1.start()
+        p2.start()
+        p3.start()
+        p1.join()
+        p2.join()
+        p3.join()
                 
 if __name__ == '__main__':
     SetUp(only_setup=False).run()
