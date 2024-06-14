@@ -8,3 +8,5 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 RUN mkdir /web
 WORKDIR /web
+
+COPY ./META/frontWeb/run_dev.sh /root/run_dev.sh

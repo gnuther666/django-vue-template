@@ -28,7 +28,7 @@ function confirmLogout() {
   local_value.value.logoutDialogVisible = false
 }
 
-function showLogoutConfirm(event) {
+function showLogoutConfirm(event: any) {
   // event.preventDefault() // 阻止默认行为（如果需要的话）
   console.log('退出登录')
   local_value.value.logoutDialogVisible = true
@@ -45,7 +45,7 @@ const updateMenuProps = () => {
   }
 }
 
-function onMobileMenuButtonClicked(event) {
+function onMobileMenuButtonClicked(event: any) {
   local_value.value.menu_config.show_mobie_menu = !local_value.value.menu_config.show_mobie_menu
 }
 const MobileDrawerDirection = ref<any>('ltr')

@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 
 const local_value = ref({
   is_login: false,
-  username: ''
+  username: '' as string|null
 })
 
 onMounted(() => {

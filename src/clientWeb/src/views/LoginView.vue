@@ -74,7 +74,12 @@ function get_captcha() {
   getCaptcha().then((res) => {
     local_value.value.login_info.verify_key = res.data.key
     local_value.value.image_hex = res.data.image_hex
-    local_value.value.image_url = hexToBlob(local_value.value.image_hex)
+    if (local_value.value.image_hex) {
+      let image_url = hexToBlob(local_value.value.image_hex)
+      if (image_url) {
+        local_value.value.image_url = image_url
+      }
+    }
   })
   local_value.value.is_lock_captcha = true
   setTimeout(() => {
@@ -82,9 +87,14 @@ function get_captcha() {
   }, 60 * 1000)
 }
 
-function hexToBlob(hexString) {
+function hexToBlob(hexString: string) {
+  const matched_list = hexString.match(/.{2}/g)
+  if (!matched_list) {
+    console.log('get an empty hex str')
+    return
+  }
   // 将16进制字符串转换为字节数组
-  var bytes = new Uint8Array(hexString.match(/.{2}/g).map((byte) => parseInt(byte, 16)))
+  var bytes = new Uint8Array(matched_list.map((byte: any) => parseInt(byte, 16)))
 
   // 创建Blob对象
   var blob = new Blob([bytes], { type: 'image/png' })

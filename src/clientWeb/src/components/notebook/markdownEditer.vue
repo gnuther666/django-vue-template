@@ -3,7 +3,7 @@ import { ref , onMounted, onUnmounted} from 'vue';
 import { defineProps, onUpdated } from 'vue';
 import { MdEditor } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import { getDocContent, saveDocContent, upload_image } from '@/api/notebook.ts'
+import { getDocContext, saveDocContent, upload_image } from '@/api/notebook'
 import { ElMessage } from 'element-plus';
 import type { ExposeParam } from 'md-editor-v3';
 
@@ -13,7 +13,7 @@ const editor = ref<ExposeParam>();
 onUpdated(() => {
     if (props.doc_id !== undefined && local_value.value.current_doc_id !== props.doc_id) {
         local_value.value.current_doc_id = props.doc_id
-        getDocContent(props.doc_id).then((res) => {
+        getDocContext(props.doc_id).then((res) => {
             local_value.value.editor_content = res.data
         })
     }
@@ -56,9 +56,9 @@ onUnmounted(() => {
     clearInterval(local_value.value.timer);
 })
 
-const onUploadImg = async (files, callback) => {
+const onUploadImg = async (files: any, callback: any) => {
   const res = await Promise.all(
-    files.map((file) => {
+    files.map((file: any) => {
       return new Promise((rev, rej) => {
         upload_image(props.book_id, props.doc_id, file).then((res) => rev(res))
           .catch((error) => rej(error));

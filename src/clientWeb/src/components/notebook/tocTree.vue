@@ -3,15 +3,10 @@ import { defineProps, onUpdated, ref, watch } from 'vue';
 import { getTocBooks, addNote as ApiAddNote } from '@/api/notebook'
 import isEmptyObject from '@/util/isEmptyObject'
 import { ElMessage, ElMessageBox, emitChangeFn } from 'element-plus'
-import { common_response } from '@/api/base_method.ts'
+import type { type_doc_toc_inner } from '@/api/notebook'
+
 const props = defineProps(['book_id'])
 const emits = defineEmits(['doc_change'])
-interface TocStruct {
-    id: number,
-    type: string,
-    label: string,
-    children?: TocStruct[]
-}
 
 enum DocType {
     PlainText = 'plain text',
@@ -21,7 +16,7 @@ enum DocType {
 interface LocalValueInterface {
     current_book_id: number | undefined,
     current_doc_id: number | undefined,
-    toc: TocStruct | undefined,
+    toc: type_doc_toc_inner | undefined,
     showAddTocDialog: boolean,
     AddNote: {
         addNoteParentId: number | undefined,
@@ -94,7 +89,7 @@ function addDoc(parent = undefined) {
     })
 }
 
-function DocClicked(data: TocStruct) {
+function DocClicked(data: type_doc_toc_inner) {
     console.log('doc clicked', data)
     local_value.value.current_doc_id = data.id
     if (local_value.value.current_doc_id !== undefined) {

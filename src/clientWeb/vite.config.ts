@@ -6,12 +6,11 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const env = loadEnv('', process.cwd());
 
-let PORT =  JSON.stringify(env.FRONT_WEB_PORT)
-if (PORT) {
-  PORT = parseInt(PORT)
-} else {
-  PORT = 8001
-}
+const TMP_PORT =  JSON.stringify(env.FRONT_WEB_PORT)
+let PORT = 8001
+if (TMP_PORT) {
+  PORT = parseInt(TMP_PORT)
+} 
 
 // https://vitejs.dev/config/
 export default defineConfig({

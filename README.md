@@ -7,7 +7,7 @@ include feature:
 - test scope
 - permission group Edit(todo)
 
-
+# project setup and develop
 ## requirements list
 * host machine requirement
   * docker/docker-compose
@@ -21,6 +21,13 @@ include feature:
 ![env.csv](./doc/config.jpg)
 2. use build.py generate config file(such as nginx,mysql,...)
 ![build](./doc/build_bash_image.jpg)
+
+## edit front-end code
+1. python build.py dev # host machine
+2. docker-compose up -d --build # host machine
+3. open browser with url "http://localhost:4321/?folder=/web"
+4. password as ./META/frontWeb/code-server_config.yaml -> 'password' element
+
 
 
 ## 目录结构

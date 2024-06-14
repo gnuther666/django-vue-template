@@ -1,0 +1,4 @@
+bind-addr: 0.0.0.0:4321
+auth: password
+password: django_vue_template
+cert: false

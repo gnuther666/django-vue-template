@@ -7,7 +7,7 @@ import DownloadButton from '@/components/DownloadButton.vue'
 
 // // 创建一个响应式的状态来存储从接口获取的数据
 const data = ref({
-  image_list: [] as Array<any> // 根据实际数据类型指定类型
+  image_list: [] as Array<string> // 根据实际数据类型指定类型
 })
 
 // // 定义一个要在页面加载时调用的函数

@@ -22,18 +22,23 @@ class Build:
         self.env_dict = dict()
 
     def dev(self):
+        print('load env from env.csv')
         with open('env.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.env_dict[row['config_key']] = row['dev_config']
+        print('replace_env')
         self.__replace_env()
         self.__save_config()
+        self.__replace_docker_compose_dev_mode()
 
     def prod(self):
+        print('load env from env.csv')
         with open('env.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.env_dict[row['config_key']] = row['prod_config']
+        print('replace_env')
         self.__replace_env()
         self.__save_config()
         self.__replace_docker_compose_prod_mode()
@@ -81,14 +86,15 @@ class Build:
 
     def __save_config(self):
         # save .env
+        print('write .env from template')
         with open('.env', 'w', encoding='utf-8') as file:
             for key, value in self.env_dict.items():
                 file.write(key + '=' + value + '\n')
-        # save front_end.env
+        print('save front_end.env')
         with open('./src/clientWeb/.env', 'w', encoding='utf-8') as file:
             file.write("VITE_BACKEND_PATH=%s\n" % self.env_dict['BACKEND_ADDR'])
             file.write("VITE_FRONT_WEB_PORT=%s\n" % self.env_dict['FRONT_WEB_PORT'])
-        # save my.cnf
+        print('save my.cnf')
         with open('./META/DB/my_template.cnf', 'r', encoding='utf-8') as file:
             lines = file.readlines()
             for index, value in enumerate(lines):
@@ -97,7 +103,7 @@ class Build:
             with open('./META/DB/my.cnf', 'w', encoding='utf-8') as file2:
                 for line in lines:
                     file2.write(line)
-        # save nginx.conf
+        print('save nginx.conf')
         with open('./META/nginx/nginx_template.conf', 'r', encoding='utf-8') as file:
             lines = file.readlines()
             for index, value in enumerate(lines):
@@ -110,7 +116,7 @@ class Build:
             with open('./META/nginx/nginx.conf', 'w', encoding='utf-8') as file2:
                 for line in lines:
                     file2.write(line)
-        # save redis.conf
+        print('save redis.conf')
         with open('./META/redis/redis_template.conf', 'r', encoding='utf-8') as file:
             lines = file.readlines()
             for index, value in enumerate(lines):
@@ -121,7 +127,7 @@ class Build:
             with open('./META/redis/redis.conf', 'w', encoding='utf-8') as file2:
                 for line in lines:
                     file2.write(line)
-        # save docker-compose.yaml
+        print('save docker-compose.yaml')
         with open('docker-compose_template.yaml', 'r', encoding='utf-8') as file:
             lines = file.readlines()
             key_match_patt = r'\$\{[a-zA-Z_]+\}'
@@ -141,15 +147,17 @@ class Build:
     def __replace_env(self):
         key_match_patt = r'\$\{[a-zA-Z_]+\}'
         for key, value in self.env_dict.items():
-            res = re.search(key_match_patt, value)
-            if res:
-                matched = res.group(0)
-                key_name = matched[2:-1]
-                self.env_dict[key] = self.env_dict[key].replace(matched, self.env_dict[key_name])
-            if value[0] == "\"" or value[0] == "'":
-                self.env_dict[key] = self.env_dict[key][1:]
-            if value[-1] == "\"" or value[-1] == "'":
-                self.env_dict[key] = self.env_dict[key][0:-1]
+            for i in range(3): # single maybe have multiple point need replace.
+                res = re.search(key_match_patt, value)
+                if res:
+                    matched = res.group(0)
+                    key_name = matched[2:-1]
+                    self.env_dict[key] = self.env_dict[key].replace(matched, self.env_dict[key_name])
+                if value[0] == "\"" or value[0] == "'":
+                    self.env_dict[key] = self.env_dict[key][1:]
+                if value[-1] == "\"" or value[-1] == "'":
+                    self.env_dict[key] = self.env_dict[key][0:-1]
+                value = self.env_dict[key]
 
     def __replace_docker_compose_prod_mode(self):
         with open('docker-compose.yaml', 'r') as file:
@@ -157,6 +165,16 @@ class Build:
             for index, value in enumerate(lines):
                 if value.find('#PROD') != -1:
                     lines[index] = value.replace('#PROD', '')
+        with open('docker-compose.yaml', 'w') as file2:
+            for line in lines:
+                file2.write(line)
+
+    def __replace_docker_compose_dev_mode(self):
+        with open('docker-compose.yaml', 'r') as file:
+            lines = file.readlines()
+            for index, value in enumerate(lines):
+                if value.find('#DEV') != -1:
+                    lines[index] = value.replace('#DEV', '')
         with open('docker-compose.yaml', 'w') as file2:
             for line in lines:
                 file2.write(line)

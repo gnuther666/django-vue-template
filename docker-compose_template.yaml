@@ -42,6 +42,23 @@ services:
     networks:
       template_network:
         ipv4_address: ${DB_IP}
+
+#DEV  front_dev:
+#DEV    build:
+#DEV      context: .
+#DEV      dockerfile: ./META/frontWeb/Dockerfile
+#DEV    container_name: front_dev
+#DEV    ports:
+#DEV      - "4321:4321"
+#DEV      - "${FRONT_WEB_PORT}:${FRONT_WEB_PORT}"
+#DEV    volumes:
+#DEV      - ./src/clientWeb:/web
+#DEV      - ./META/frontWeb/code-server_config.yaml:/root/.config/code-server/config.yaml
+#DEV    command: sh /root/run_dev.sh
+#DEV    networks:
+#DEV      template_network:
+#DEV        ipv4_address: ${BASE_IP}.0.0.15
+
       
   redis:
     build:
