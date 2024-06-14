@@ -1,11 +1,11 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from util.response import CommonResponse
 from app.models.app_user import AppUserModel
 from util.redis_cache import RedisCache
 from public_tools.tools.read_env import GetEnv
-import logging
+import logging, datetime
 
 captcha_method = GetEnv().get_env().captcha
 logger = logging.getLogger('django')
@@ -46,3 +46,19 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         if verify_result.is_success == False:
             return False, verify_result.msg
         return True, 'success'
+
+class CustomTokenRefreshView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        # if not request.user.is_active:
+        #     return CommonResponse(data={'msg': 'user not active'}, code=401)
+        refresh_token = request.data.get('refresh')
+        logger.debug(f'refresh user information:refresh_token={refresh_token}')
+        data = super().post(request, *args, **kwargs)
+        access_token_lifespan = datetime.timedelta(minutes=30)
+        data['access_token'] = self.get_access_token(refresh_token, access_token_lifespan)
+        return CommonResponse(data=data, code=200)
+
+    def get_access_token(self, refresh_token, access_token_lifespan):
+        token = self.token_service.refresh_token(refresh_token)
+        token.set_exp(from_time=datetime.datetime.utcnow(), lifetime=access_token_lifespan)
+        return str(token)

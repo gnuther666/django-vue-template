@@ -5,6 +5,7 @@ include feature:
 - jwt login/logout
 - celery task
 - test scope
+- permission group Edit(todo)
 
 
 ## requirements list

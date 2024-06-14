@@ -48,5 +48,6 @@ class ExampleLoginedViewset(viewsets.ModelViewSet):
         return CommonResponse(data={'data': real_path, 'msg': f'文件上传成功{str(file_struct)}'}, code=200)
     
     @action(methods=['GET', ], detail=False)
-    def get_test_logined(self, request, *args, **kwargs):
-        return CommonResponse(data={'data': 'user logined'}, code=200)
+    def get_user_info(self, request, *args, **kwargs):
+        user = request.user
+        return CommonResponse(data={'data': str(user)}, code=200)
