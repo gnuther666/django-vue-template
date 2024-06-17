@@ -22,8 +22,8 @@ onMounted(() => {
 
 <template>
   <div class="user_info">
-    <div class="unlogin" v-if="!local_value.is_login">未登录,点击登录</div>
-    <div class="loged" v-if="local_value.is_login" v-html="'您好,' + local_value.username"></div>
+    <div class="unlogin" v-if="!local_value.is_login">please click and login</div>
+    <div class="loged" v-if="local_value.is_login" v-html="'Hellow,' + local_value.username"></div>
   </div>
 </template>
 

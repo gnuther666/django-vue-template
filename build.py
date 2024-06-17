@@ -76,6 +76,9 @@ class Build:
                     row['prod_config'] = None
                     writer.writerow(row)
 
+    def create_home_page(self):
+        os.system('pandoc README.md -s -o ./src/clientWeb/assets/readme.html --self-contained')
+
 
     def async_server(self):
         print('not publish')
@@ -94,6 +97,7 @@ class Build:
         with open('./src/clientWeb/.env', 'w', encoding='utf-8') as file:
             file.write("VITE_BACKEND_PATH=%s\n" % self.env_dict['BACKEND_ADDR'])
             file.write("VITE_FRONT_WEB_PORT=%s\n" % self.env_dict['FRONT_WEB_PORT'])
+            file.write("VITE_NEED_CAPTCHA=%s\n" % self.env_dict['CAPTCHA'])
         print('save my.cnf')
         with open('./META/DB/my_template.cnf', 'r', encoding='utf-8') as file:
             lines = file.readlines()

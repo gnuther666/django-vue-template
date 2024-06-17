@@ -1,6 +1,5 @@
 # project introduce
-django + vue + taro management system template  
-Template based on front and rear end separation  
+django + vue  management system template Template based on front and rear end separation, this system include many basic function, it can help you quickly to build your web application.  
 include feature:
 - jwt login/logout
 - celery task
@@ -49,11 +48,7 @@ include feature:
 # 注意事项
 1. 因为后端apt源没有修改,所以如果速度慢，最好开启vpn后再开始构建镜像
 
-
-# 开发进度
-* [ ] frontend
-  * [x] account login and logout
-  * [x] fileupload and download
+> document to html command : "D:\soft\Pandoc\pandoc" README.md -s -o .\src\clientWeb\public\README.html --self-contained
 
 
 

@@ -118,30 +118,5 @@ onUnmounted(() => {
 </template>
 
 <style>
-@media (max-width: 900px) {
-  .homepage_logo {
-    height: 5vh;
-    position: absolute;
-    top: 3vh;
-    left: 3vw;
-    margin-right: 20px;
-  }
-}
 
-@media (min-width: 901px) {
-  .homepage_logo {
-    height: 60%;
-    position: relative;
-    top: 20%;
-    left: 5%;
-    margin-right: 20px;
-  }
-}
-
-.user_info_blck {
-  position: absolute;
-  right: 0;
-  height: 100%;
-  background-color: rgba(109, 118, 124, 0.5);
-}
 </style>

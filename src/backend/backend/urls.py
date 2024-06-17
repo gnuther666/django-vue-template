@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenRefreshView
+from app.views.SystemMenu.sys_menu_view import SysMenuViewset
 
 from app.views.login.login_view import CustomTokenObtainPairView, CustomTokenRefreshView
 from app.views.login.captcha_view import get_captcha
@@ -34,6 +35,7 @@ router.register(r'example_logined', ExampleLoginedViewset)
 router.register(r'notebook', UserBookViewset)
 router.register(r'notebook_toc', BookTocViewset)
 router.register(r'notebook_doc', BookDocViewset)
+router.register(r'sys_menu', SysMenuViewset)
 
 
 urlpatterns = [

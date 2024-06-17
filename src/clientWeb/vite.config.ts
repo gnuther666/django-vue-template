@@ -39,5 +39,6 @@ export default defineConfig({
   },
   define: {
     VITE_BACKEND_PATH: JSON.stringify(env.BACKEND_PATH),
+    VITE_NEED_CAPTCHA: JSON.stringify(env.NEED_CAPTCHA),
   }
 })

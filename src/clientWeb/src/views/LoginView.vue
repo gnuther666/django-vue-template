@@ -2,17 +2,17 @@
   <div class="fullscreen-background">
     <div class="top_title">
       <img src="@/assets/image/project_logo.png" alt="logo" class="login_prj_icon" />
-      <p class="login_prj_text">全栈模板系统前台</p>
+      <p class="login_prj_text">djagno-vue-template</p>
     </div>
     <div class="login_area">
       <el-form :label-position="login_form_label_position">
-        <el-form-item label="账号" class="form_item" :label-width="60">
+        <el-form-item label="account" class="form_item" :label-width="60">
           <el-input v-model="local_value.login_info.username" />
         </el-form-item>
-        <el-form-item label="密码" class="form_item" :label-width="60">
+        <el-form-item label="password" class="form_item" :label-width="60">
           <el-input type="password" v-model="local_value.login_info.password" />
         </el-form-item>
-        <el-form-item label="验证码" v-if="enable_verify()" class="form_item" :label-width="60">
+        <el-form-item label="varify" v-if="is_need_capthca === 'base' && enable_verify " class="form_item" :label-width="60">
           <el-input v-model="local_value.login_info.verify_input" class="short_input" />
           <img :src="local_value.image_url" v-if="local_value.image_url" alt="Hexadecimal image" class="captcha_img"/>
           <el-icon>
@@ -21,8 +21,8 @@
           
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit" v-bind:disabled="!enable_login()">登录</el-button>
-          <el-button type="primary" @click="onSubmit">注册</el-button>
+          <el-button type="primary" @click="onSubmit" v-bind:disabled="!enable_login()">login</el-button>
+          <el-button type="primary" @click="onSubmit">sing up</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -34,6 +34,12 @@ import { ref, nextTick } from 'vue'
 import { getCaptcha, postLogin } from '@/api/login'
 import { useRouter } from 'vue-router'
 import type { FormProps } from 'element-plus'
+
+let is_need_capthca:string|undefine = ref(undefined)
+if (import.meta.env.VITE_BACKEND_PATH == 'base'){
+  is_need_capthca.value = 'base'
+}
+
 
 const local_value = ref({
   login_info: {
@@ -54,10 +60,14 @@ const login_form_label_position = ref<FormProps['labelPosition']>('right')
 function enable_login() {
   if (
     local_value.value.login_info.username.length === 0 ||
-    local_value.value.login_info.password.length === 0 ||
-    local_value.value.login_info.verify_input.length === 0
+    local_value.value.login_info.password.length === 0 
   ) {
     return false
+  }
+  if (is_need_capthca.value == 'base'){
+    if (local_value.value.login_info.verify_input.length !== 4) {
+      return false
+    }
   }
   return true
 }
@@ -223,7 +233,7 @@ const onSubmit = () => {
     right: 10%;
     top: 30%;
     width: 30em;
-    height: 20em;
+    /* height: 20em; */
     border: #eeeeee solid 1px;
     background-color: rgba(255, 255, 229, 0.5);
     border-radius: 15px;
