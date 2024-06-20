@@ -48,7 +48,8 @@ services:
 #DEV      context: .
 #DEV      dockerfile: ./META/frontWeb/Dockerfile
 #DEV    container_name: front_dev
-#DEV    mem_limit: 4G
+#DEV    mem_limit: 6G
+#DEV    cpus: 2
 #DEV    ports:
 #DEV      - "4321:4321"
 #DEV      - "${FRONT_WEB_PORT}:${FRONT_WEB_PORT}"

@@ -6,6 +6,8 @@ include feature:
 - test scope
 - permission group Edit(todo)
 
+![build](./doc/homepage.jpg)
+
 # project setup and develop
 ## requirements list
 * host machine requirement

@@ -2,6 +2,11 @@
 
 <template>
   <main>
-    <div>没有找到页面</div>
+    <RouterView />
   </main>
 </template>
+
+<style>
+
+
+</style>

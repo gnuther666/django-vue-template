@@ -12,7 +12,7 @@
         <el-form-item label="password" class="form_item" :label-width="60">
           <el-input type="password" v-model="local_value.login_info.password" />
         </el-form-item>
-        <el-form-item label="varify" v-if="is_need_capthca === 'base' && enable_verify " class="form_item" :label-width="60">
+        <el-form-item label="varify" v-if="is_need_capthca === 'base' " class="form_item" :label-width="60">
           <el-input v-model="local_value.login_info.verify_input" class="short_input" />
           <img :src="local_value.image_url" v-if="local_value.image_url" alt="Hexadecimal image" class="captcha_img"/>
           <el-icon>
@@ -35,13 +35,28 @@ import { getCaptcha, postLogin } from '@/api/login'
 import { useRouter } from 'vue-router'
 import type { FormProps } from 'element-plus'
 
-let is_need_capthca:string|undefine = ref(undefined)
+let is_need_capthca = ref<string|undefined>(undefined)
 if (import.meta.env.VITE_BACKEND_PATH == 'base'){
   is_need_capthca.value = 'base'
 }
 
 
-const local_value = ref({
+interface LocalValueInterface {
+  login_info: {
+    username: string,
+    password: string,
+    verify_key: string,
+    verify_input: string
+  },
+  image_hex: string|undefined,
+  is_lock_captcha: boolean,
+  image_url: string,
+  access_token: string,
+  refresh_token: string,
+  out_username: string
+}
+
+const local_value = ref<LocalValueInterface>({
   login_info: {
     username: '',
     password: '',
@@ -64,7 +79,7 @@ function enable_login() {
   ) {
     return false
   }
-  if (is_need_capthca.value == 'base'){
+  if (is_need_capthca && is_need_capthca.value === 'base'){
     if (local_value.value.login_info.verify_input.length !== 4) {
       return false
     }

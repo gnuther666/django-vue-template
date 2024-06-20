@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TitleMenu from '../views/TitleMenu.vue'
+import TopMenu from '../views/TopMenu.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,44 +8,55 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: TitleMenu,
+      component: TopMenu,
       children: [
         {
-          path: '/',
+          path: '',
           name: 'home',
-          component: () => import('../views/HomeView.vue')
+          component: () => import('@/views/HomeView.vue')
         },
         {
-          path: '/user',
+          path: 'user',
           name: 'user',
-          component: () => import('../views/UserCenter.vue')
+          component: () => import('@/views/UserCenter.vue')
         },
         {
-          path: '/help',
+          path: 'help',
           name: 'help',
-          component: () => import('../views/HelpView.vue')
+          component: () => import('@/views/HelpView.vue')
         },
         {
-          path: '/example',
+          path: 'example',
           name: 'example',
-          component: () => import('../views/ExampleView.vue')
+          component: () => import('@/views/ExampleView.vue')
         },
         {
-          path: '/notebook',
+          path: 'notebook',
           name: 'notebook',
-          component: () => import('../views/noteBook.vue')
+          component: () => import('@/views/noteBook.vue')
+        },{
+          path: 'admin',
+          name: 'admin',
+          component: ()=> import('@/views/Admin.vue'),
+          children: [
+            {
+              path: 'permission',
+              name: 'permission',
+              component: () => import('@/views/PermissionManager.vue')
+            },
+          ],
         },
         {
-          path: '/404',
+          path: '404',
           name: 'notFound',
-          component: () => import('../views/NotFoundPageView.vue')
+          component: () => import('@/views/404.vue')
         }
       ]
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('@/views/LoginView.vue')
     },
     {
       path: '/:pathMatch(.*)*',

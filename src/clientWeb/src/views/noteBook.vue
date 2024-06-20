@@ -15,7 +15,7 @@ const local_value = ref<LocalValueInterface>({
 
 <template>
   <main>
-    <div :style="{position: 'absolute', left: '20px', top:'15vh', backgroundColor: 'white', zIndex: '1'}">
+    <div class="relative top-0 left-0">
       <bookSelect @book_id_change="(doc_id, book_id) => (local_value.doc_id = doc_id, local_value.book_id = book_id)"/>
     </div>
     

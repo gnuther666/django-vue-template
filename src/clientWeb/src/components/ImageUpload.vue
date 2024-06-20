@@ -42,7 +42,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 .avatar-uploader .avatar {
   width: 100%;
   height: 100%;
-  display: block;
 }
 </style>
 

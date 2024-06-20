@@ -174,14 +174,15 @@ class Build:
                 file2.write(line)
 
     def __replace_docker_compose_dev_mode(self):
-        with open('docker-compose.yaml', 'r') as file:
-            lines = file.readlines()
-            for index, value in enumerate(lines):
-                if value.find('#DEV') != -1:
-                    lines[index] = value.replace('#DEV', '')
-        with open('docker-compose.yaml', 'w') as file2:
-            for line in lines:
-                file2.write(line)
+        # with open('docker-compose.yaml', 'r') as file:
+        #     lines = file.readlines()
+        #     for index, value in enumerate(lines):
+        #         if value.find('#DEV') != -1:
+        #             lines[index] = value.replace('#DEV', '')
+        # with open('docker-compose.yaml', 'w') as file2:
+        #     for line in lines:
+        #         file2.write(line)
+        pass
 
 
 if __name__ == "__main__":
