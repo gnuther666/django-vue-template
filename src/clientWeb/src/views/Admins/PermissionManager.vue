@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { getAuthGroups, setAuthGroup } from '@/api/admin'
 import type { type_auth_group_inner } from '@/api/admin'
 import { ElTable, ElTableColumn, ElMessage } from 'element-plus';
+import PermissionGroupManager from '@/views/Admins/PermissionGroupManager.vue';
 
 interface Column {
   prop: string;
@@ -32,7 +33,7 @@ const local_value = ref<LocalValueInterface>({
   auth_groups: undefined,
   activeTabName: 'group',
   showGroupEditor: false,
-  editingGroupIndex: 0,
+  editingGroupIndex: -1,
 })
 
 onMounted(() => {
@@ -62,6 +63,7 @@ function submitGroupInfo() {
   })
 }
 
+
 </script>
 
 <template>
@@ -83,7 +85,9 @@ function submitGroupInfo() {
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="group_permission" name="group_permission">group_permission</el-tab-pane>
+      <el-tab-pane label="group_permission" name="group_permission">
+        <PermissionGroupManager />
+      </el-tab-pane>
     </el-tabs>
     <el-dialog v-model="local_value.showGroupEditor" title="edit group" width="500">
       <el-form v-if="local_value.editingGroupIndex != undefined && local_value.editingGroupIndex >= 0
@@ -124,6 +128,8 @@ function submitGroupInfo() {
         </div>
       </template>
     </el-dialog>
+
+    
   </main>
 </template>
 

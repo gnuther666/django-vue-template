@@ -3,6 +3,7 @@ import { DArrowLeft } from '@element-plus/icons-vue';
 import { ref, onMounted, nextTick, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import type {RouteRecordName} from 'vue-router'
+import TopMenuUser from '@/views/TopMenuUser.vue'
 
 const route = useRoute()
 const router = useRouter()

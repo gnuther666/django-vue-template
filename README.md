@@ -7,15 +7,16 @@ include feature:
 - permission group Edit(todo)
 
 ![build](./doc/homepage.jpg)
+![build](./doc/permission_group_auth.jpg)
 
 # project setup and develop
 ## requirements list
 * host machine requirement
   * docker/docker-compose
   * python3.x
-* technical points involved in the code
-  * backend: python39 + django + rest + jwt + redis
-  * frontend: vite + vue + element-ui-plus
+* technical points will involved in the code
+  * backend: python39 + django + rest + jwt + redis + mysql
+  * frontend: vite + vue + element-ui-plus + tailwindcss
 
 ## how to startup project
 1. copy the env_template.csv to env.csv and write your config.

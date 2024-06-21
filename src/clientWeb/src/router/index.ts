@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TitleMenu from '../views/TitleMenu.vue'
 import TopMenu from '../views/TopMenu.vue'
 
 const router = createRouter({
@@ -42,7 +41,7 @@ const router = createRouter({
             {
               path: 'permission',
               name: 'permission',
-              component: () => import('@/views/PermissionManager.vue')
+              component: () => import('@/views/Admins/PermissionManager.vue')
             },
           ],
         },
