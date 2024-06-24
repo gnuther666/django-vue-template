@@ -8,7 +8,7 @@ from typing import Tuple
 
 from django.conf import settings
 from django.http import HttpResponse
-from util.response import CommonResponse
+from public_tools.tools.response import CommonResponse
 
 logger = logging.getLogger('django')
 

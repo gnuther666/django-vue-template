@@ -3,7 +3,7 @@ from app.views.example.example_serializer import ExampleSerializer
 from app.models.app_user import AppUserModel
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from util.response import CommonResponse
+from public_tools.tools.response import CommonResponse
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from public_tools.tools.read_env import GetEnv, get_web_res_web_url
 from django.conf import settings

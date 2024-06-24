@@ -1,7 +1,7 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from util.response import CommonResponse
+from public_tools.tools.response import CommonResponse
 from app.models.app_user import AppUserModel
 from util.redis_cache import RedisCache
 from public_tools.tools.read_env import GetEnv

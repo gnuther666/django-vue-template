@@ -3,7 +3,7 @@ from notebook.models.user_books import BookTocModel, BookDocsModel
 from rest_framework import viewsets
 import logging
 from rest_framework.permissions import IsAuthenticated
-from util.response import CommonResponse
+from public_tools.tools.response import CommonResponse
 from rest_framework.decorators import action
 from notebook.utils.TocTree import MyTocTree
 

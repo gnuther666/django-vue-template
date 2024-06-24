@@ -31,6 +31,7 @@ const local_value = ref<LocalValueInterface>({
 
 onMounted(() => {
     setMenuClass()
+    generateBreadcrumbList(route)
 })
 
 function setMenuClass() {

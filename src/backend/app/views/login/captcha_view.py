@@ -1,5 +1,5 @@
 from util.captcha import Captcha
-from util.response import CommonResponse
+from public_tools.tools.response import CommonResponse
 from util.redis_cache import RedisCache
 from public_tools.tools.read_env import GetEnv
 

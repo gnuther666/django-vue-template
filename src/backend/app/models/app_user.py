@@ -1,8 +1,10 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.db import models
 from public_tools.tools.read_env import GetEnv
+from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import make_password, check_password
 import uuid
+
 
 
 class AppUserModel(AbstractUser):
@@ -13,6 +15,15 @@ class AppUserModel(AbstractUser):
         db_table = 'user'
         ordering = ['-username']
         verbose_name = '用户表'
+
+    def user_permissions(self)->set:
+        groups = Group.objects.filter(user=self)
+        all_perm = list()
+        for one_group in groups:
+            if one_group.name == 'superuser':
+                return set([one.codename for one in Permission.objects.all()])
+            all_perm.extend([one.codename for one in one_group.permissions.all()])
+        return set(all_perm)
 
     @staticmethod
     def gen_default_super_user():

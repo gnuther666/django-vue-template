@@ -113,7 +113,7 @@ function onDelGroupPermissions() {
       class="flex flex-grow bg-slate-50 mr-2 border-solid border-slate-300 rounded-lg border disable">
       <div class="flex flex-col flex-grow min-w-56 border-solid border-slate-300 rounded-lg border">
 
-          <div class="h-8 ml-2 mt-2">could auth permission</div>
+          <div class="h-8 ml-2 mt-2">could auth permission count {{local_value.could_auth_permissions.length}}</div>
           <div class="flex-grow overflow-atuo ml-2">
             <el-checkbox-group v-model="local_value.current_left_perm_selected" class="flex flex-col"
               @change="onLeftPermssionChooseChanged">
@@ -136,7 +136,7 @@ function onDelGroupPermissions() {
         </div>
       </div>
       <div class="flex flex-col flex-grow min-w-56 border-solid border-slate-300 rounded-lg border">
-          <div class="h-8 ml-2 mt-2">has auth permission</div>
+          <div class="h-8 ml-2 mt-2">has auth permission count {{ local_value.right_permissions.length }}</div>
           <div class="flex-grow overflow-atuo ml-2"> <el-checkbox-group v-model="local_value.current_right_perm_selected" class="flex flex-col">
               <el-checkbox v-for="item in local_value.right_permissions" :key="item.value" :label="item.name"
                 :value="item.value" />

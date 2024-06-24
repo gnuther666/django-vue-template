@@ -1,17 +1,16 @@
-import logging, os
+import logging
 from app.views.permission.permission_serializer import PermissionSerializer
 from app.models.app_user import AppUserModel
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from util.response import CommonResponse
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from django.db.models.query import QuerySet
-from public_tools.tools.read_env import GetEnv, get_web_res_web_url
-from util.file_process import UserFileProcess
+from public_tools.tools.response import CommonResponse
+from rest_framework.permissions import IsAuthenticated
 from app.models import AuthGroupExpander
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
-from app.Permissions import AppPermissions
+from app.apps import AppConfig
+from app.Permissions import PERMISSIONS
+from public_tools.tools.PermissionDeactor import use_permission
 
 logger = logging.getLogger('app')
 
@@ -20,10 +19,11 @@ class PermissionViewset(viewsets.ModelViewSet):
     serializer_class = PermissionSerializer
     permission_classes = (IsAuthenticated, )
 
+    @use_permission([PERMISSIONS.cat_auth_group,])
     @action(methods=['GET'], detail=False)
     def get_auth_groups(self, request, *args, **kwargs):
         values = AuthGroupExpander.objects.values('group_id', 'group__name', 'outer_name', 'description').all()
-        return CommonResponse(data={'data': [dict(one) for one in values], 'msg': f'success'})
+        return CommonResponse(data={'data': [dict(one) for one in values if one['group__name'] != 'superuser'], 'msg': f'success'})
     
     @action(methods=['POST', ], detail=False)
     def set_auth_group_info(self, request, *args, **kwargs):
@@ -37,7 +37,7 @@ class PermissionViewset(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=False)
     def get_could_auth_permissions(self, request, *args, **kwargs):
-        datas = [{'name':one.name, 'value': one.value } for one in AppPermissions]
+        datas = [{'name':one.PermissionKey, 'value': one.PermissionName } for one in  AppConfig.get_all_permissions()]
         return CommonResponse(data={'msg': 'success', 'data': datas})
 
     @action(methods=['GET'], detail=False)

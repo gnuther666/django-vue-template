@@ -1,7 +1,9 @@
 from enum import Enum
-class AppPermissions(Enum):
+
+class PERMISSIONS(Enum):
     cat_auth_group = 'Cat Auth Group'
     edit_auth_group = 'Edit Auth Group'
+
 
 class AppAuthGroup(Enum):
     superuser = ('super user', 'have all system access, the highest level access')
